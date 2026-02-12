@@ -28,6 +28,10 @@
     </scm>
     <properties>
         <java.version>25</java.version>
+        <!-- Jib -->
+        <jib.version>3.5.1</jib.version>
+        <!-- локальный дефолт; в CI переопределим -->
+        <image.name>local/${project.artifactId}</image.name>
     </properties>
     <dependencies>
         <dependency>
@@ -91,6 +95,34 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>${jib.version}</version>
+
+                <configuration>
+                    <from>
+                        <image>eclipse-temurin:25</image>
+                    </from>
+
+                    <to>
+                        <image>${image.name}</image>
+                        <tags>
+                            <tag>latest</tag>
+                            <tag>${project.version}</tag>
+                        </tags>
+                    </to>
+
+                    <container>
+                        <ports>
+                            <port>80</port>
+                            <port>4028</port>
+                            <port>4029</port>
+                        </ports>
+                        <user>root</user>
+                    </container>
                 </configuration>
             </plugin>
         </plugins>
