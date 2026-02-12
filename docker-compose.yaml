@@ -1,0 +1,36 @@
+services:
+  asic1:
+    image: ghcr.io/stitchonfire/simulator:latest
+    container_name: asic1
+    environment:
+      SIM_SERIAL_PREFIX: SIM01
+      SIM_MODEL: "Antminer S19j Pro"
+      SIM_CGMINER_PORTS: "4028,4029"
+    ports:
+      - "127.0.0.2:80:80"
+      - "127.0.0.2:4028:4028"
+      - "127.0.0.2:4029:4029"
+
+  asic2:
+    image: ghcr.io/stitchonfire/simulator:latest
+    container_name: asic2
+    environment:
+      SIM_SERIAL_PREFIX: SIM02
+      SIM_MODEL: "Antminer S19j Pro"
+      SIM_CGMINER_PORTS: "4028,4029"
+    ports:
+      - "127.0.0.3:80:80"
+      - "127.0.0.3:4028:4028"
+      - "127.0.0.3:4029:4029"
+
+  asic3:
+    image: ghcr.io/stitchonfire/simulator:latest
+    container_name: asic3
+    environment:
+      SIM_SERIAL_PREFIX: SIM03
+      SIM_MODEL: "Antminer S19j Pro"
+      SIM_CGMINER_PORTS: "4028,4029"
+    ports:
+      - "127.0.0.4:80:80"
+      - "127.0.0.4:4028:4028"
+      - "127.0.0.4:4029:4029"

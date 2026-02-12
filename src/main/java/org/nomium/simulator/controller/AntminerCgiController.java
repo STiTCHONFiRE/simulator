@@ -46,7 +46,7 @@ public class AntminerCgiController {
     }
 
     private static String remoteIp(HttpServletRequest req) {
-        String ip = req.getRemoteAddr();
+        String ip = req.getLocalAddr();
         return ip == null ? "0.0.0.0" : ip;
     }
 
