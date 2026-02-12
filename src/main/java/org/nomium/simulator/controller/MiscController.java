@@ -1,9 +1,9 @@
-package org.nomium.sumulator.controller;
+package org.nomium.simulator.controller;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.nomium.sumulator.config.SimProperties;
+import org.nomium.simulator.config.SimProperties;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

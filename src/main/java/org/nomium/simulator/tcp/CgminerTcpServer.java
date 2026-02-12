@@ -1,12 +1,12 @@
-package org.nomium.sumulator.tcp;
+package org.nomium.simulator.tcp;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
-import org.nomium.sumulator.config.SimProperties;
-import org.nomium.sumulator.service.TelemetryService;
+import org.nomium.simulator.config.SimProperties;
+import org.nomium.simulator.service.TelemetryService;
 import org.springframework.context.SmartLifecycle;
 import org.springframework.stereotype.Component;
 import tools.jackson.databind.ObjectMapper;
@@ -44,8 +44,6 @@ public class CgminerTcpServer implements SmartLifecycle {
     public void start() {
         if (running) return;
         running = true;
-
-        log.info("Starting TCP Server, {}", props.getPoolUrl());
 
         for (int port : parsePorts(props.getCgminer().getPortsCsv())) {
             try {

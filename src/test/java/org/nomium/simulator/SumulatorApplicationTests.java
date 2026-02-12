@@ -1,4 +1,4 @@
-package org.nomium.sumulator;
+package org.nomium.simulator;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

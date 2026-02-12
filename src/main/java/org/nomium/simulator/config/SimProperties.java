@@ -1,4 +1,4 @@
-package org.nomium.sumulator.config;
+package org.nomium.simulator.config;
 
 import lombok.AccessLevel;
 import lombok.Data;

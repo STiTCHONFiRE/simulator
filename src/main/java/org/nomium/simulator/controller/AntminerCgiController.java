@@ -1,10 +1,10 @@
-package org.nomium.sumulator.controller;
+package org.nomium.simulator.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.nomium.sumulator.service.TelemetryService;
+import org.nomium.simulator.service.TelemetryService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -1,9 +1,9 @@
-package org.nomium.sumulator.service;
+package org.nomium.simulator.service;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.nomium.sumulator.config.SimProperties;
+import org.nomium.simulator.config.SimProperties;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;

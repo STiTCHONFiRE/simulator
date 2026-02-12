@@ -1,4 +1,4 @@
-package org.nomium.sumulator.config;
+package org.nomium.simulator.config;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;

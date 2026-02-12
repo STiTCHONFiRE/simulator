@@ -1,6 +1,6 @@
-package org.nomium.sumulator.security;
+package org.nomium.simulator.security;
 
-import org.nomium.sumulator.config.SimProperties;
+import org.nomium.simulator.config.SimProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
