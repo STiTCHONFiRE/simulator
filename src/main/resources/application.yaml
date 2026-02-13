@@ -1,6 +1,6 @@
 spring:
   application:
-    name: sumulator
+    name: simulator
   threads:
     virtual:
       enabled: true
