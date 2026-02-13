@@ -52,7 +52,7 @@ public class SecurityConfig {
         http.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/health", "/test", "/test.html").permitAll()
+                .requestMatchers("/actuator/**", "/test", "/test.html").permitAll()
                 .requestMatchers("/cgi-bin/**").authenticated()
                 .anyRequest().authenticated()
         );
