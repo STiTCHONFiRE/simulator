@@ -15,7 +15,7 @@ public class MiscController {
 
     SimProperties props;
 
-    @GetMapping(value = { "/test", "test.html"}, produces = MediaType.TEXT_HTML_VALUE)
+    @GetMapping(value = {"/", "/test", "test.html"}, produces = MediaType.TEXT_HTML_VALUE)
     public String index() {
         return "<html><body><h1>" + props.getVendor() + " " + props.getModel() + "</h1>"
                 + "<p>Firmware: " + props.getFirmware() + "</p></body></html>";

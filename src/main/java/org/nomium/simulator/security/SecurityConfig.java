@@ -67,7 +67,7 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService(SimProperties props) {
         UserDetails user = User.withUsername(props.getAuth().getUsername())
-                .password("{noop}" + props.getAuth().getPassword())
+                .password(props.getAuth().getPassword())
                 .roles("ADMIN")
                 .build();
 
