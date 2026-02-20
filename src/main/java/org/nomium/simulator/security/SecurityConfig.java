@@ -1,8 +1,11 @@
 package org.nomium.simulator.security;
 
 import org.nomium.simulator.config.SimProperties;
+import org.nomium.simulator.http.RebootingFilter;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
@@ -14,9 +17,17 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.DigestAuthenticationFilter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.util.StringUtils;
 
 @Configuration
 public class SecurityConfig {
+
+    @Bean
+    public FilterRegistrationBean<RebootingFilter> rebootingFilterRegistration(RebootingFilter filter) {
+        var reg = new FilterRegistrationBean<>(filter);
+        reg.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        return reg;
+    }
 
     @Bean
     public DigestAuthenticationEntryPoint digestEntryPoint() {
@@ -52,7 +63,7 @@ public class SecurityConfig {
         http.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/actuator/**", "/test", "/test.html").permitAll()
+                .requestMatchers("/actuator/health", "/actuator/health/**", "/actuator/info", "/test", "/test.html").permitAll()
                 .requestMatchers("/cgi-bin/**").authenticated()
                 .anyRequest().authenticated()
         );
@@ -66,6 +77,10 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService(SimProperties props) {
+        if (!StringUtils.hasText(props.getAuth().getUsername()) || !StringUtils.hasText(props.getAuth().getPassword())) {
+            throw new IllegalStateException("SIM_USERNAME and SIM_PASSWORD must be configured");
+        }
+
         UserDetails user = User.withUsername(props.getAuth().getUsername())
                 .password(props.getAuth().getPassword())
                 .roles("ADMIN")

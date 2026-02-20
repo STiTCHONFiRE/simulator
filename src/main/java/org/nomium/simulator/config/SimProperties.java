@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.time.Duration;
+
 @Data
 @ConfigurationProperties(prefix = "sim")
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -20,6 +22,8 @@ public class SimProperties {
     double hashrateThs = 104;
     double temperatureC = 67;
 
+    Duration rebootDowntime = Duration.ofSeconds(15);
+
     String poolUrl = "stratum+tcp://pool.example.com:3333";
 
     final Auth auth = new Auth();
@@ -27,8 +31,8 @@ public class SimProperties {
 
     @Data
     public static final class Auth {
-        private String username = "root";
-        private String password = "root";
+        private String username;
+        private String password;
     }
 
     @Data

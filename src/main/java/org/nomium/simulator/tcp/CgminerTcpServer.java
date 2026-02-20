@@ -6,6 +6,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.nomium.simulator.config.SimProperties;
+import org.nomium.simulator.service.RebootService;
 import org.nomium.simulator.service.TelemetryService;
 import org.springframework.context.SmartLifecycle;
 import org.springframework.stereotype.Component;
@@ -32,8 +33,10 @@ public class CgminerTcpServer implements SmartLifecycle {
 
     SimProperties props;
     TelemetryService telemetry;
+    RebootService rebootService;
     ObjectMapper objectMapper;
 
+    @NonFinal
     ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
     List<ServerSocket> sockets = new ArrayList<>();
 
@@ -42,7 +45,12 @@ public class CgminerTcpServer implements SmartLifecycle {
 
     @Override
     public void start() {
-        if (running) return;
+        if (running) {
+            return;
+        }
+        if (executor.isShutdown() || executor.isTerminated()) {
+            executor = Executors.newVirtualThreadPerTaskExecutor();
+        }
         running = true;
 
         for (int port : parsePorts(props.getCgminer().getPortsCsv())) {
@@ -67,7 +75,7 @@ public class CgminerTcpServer implements SmartLifecycle {
                 executor.submit(() -> handle(s));
             } catch (Exception e) {
                 if (running) {
-                    // на shutdown тут часто летит SocketException - не шуметь
+                    log.warn("[asic-sim] accept loop error on {}: {}", ss.getLocalPort(), e.getMessage());
                 }
             }
         }
@@ -75,6 +83,10 @@ public class CgminerTcpServer implements SmartLifecycle {
 
     private void handle(Socket s) {
         try (s) {
+            if (rebootService.isRebooting()) {
+                return;
+            }
+
             s.setSoTimeout(props.getCgminer().getSocketReadTimeoutMs());
 
             String clientIp = ((InetSocketAddress) s.getRemoteSocketAddress()).getAddress().getHostAddress();
@@ -85,7 +97,6 @@ public class CgminerTcpServer implements SmartLifecycle {
                 InputStream in = s.getInputStream();
                 n = in.read(buf);
             } catch (SocketTimeoutException timeout) {
-                // порт-проба: connect без data
                 return;
             }
 
@@ -107,7 +118,8 @@ public class CgminerTcpServer implements SmartLifecycle {
             os.write(out);
             os.write('\n');
             os.flush();
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            log.debug("[asic-sim] tcp request handling error: {}", e.getMessage());
         }
     }
 
@@ -118,10 +130,13 @@ public class CgminerTcpServer implements SmartLifecycle {
         for (String p : parts) {
             try {
                 ports.add(Integer.parseInt(p.trim()));
-            } catch (Exception ignored) {
+            } catch (Exception e) {
+                log.warn("[asic-sim] invalid cgminer port value '{}'", p);
             }
         }
-        if (ports.isEmpty()) ports.add(4028);
+        if (ports.isEmpty()) {
+            ports.add(4028);
+        }
         return ports;
     }
 
@@ -129,7 +144,10 @@ public class CgminerTcpServer implements SmartLifecycle {
     public void stop() {
         running = false;
         for (ServerSocket ss : sockets) {
-            try { ss.close(); } catch (Exception ignored) {}
+            try {
+                ss.close();
+            } catch (Exception ignored) {
+            }
         }
         sockets.clear();
         executor.shutdownNow();

@@ -6,23 +6,24 @@ spring:
       enabled: true
 
 server:
-  port: ${SIM_HTTP_PORT:80}
+  port: 80
 
 sim:
-  vendor: ${SIM_VENDOR:Bitmain}
-  model: ${SIM_MODEL:Antminer S19j Pro}
-  firmware: ${SIM_FIRMWARE:2025.11}
-  systemFilesystemVersion: ${SIM_SYSTEM_FS_VERSION:2025-11-01}
-  serialPrefix: ${SIM_SERIAL_PREFIX:SIM}
-  powerW: ${SIM_POWER_W:3050}
-  hashrateThs: ${SIM_HASHRATE_THS:104}
-  temperatureC: ${SIM_TEMPERATURE_C:67}
-  poolUrl: ${SIM_POOL_URL:stratum+tcp://pool.example.com:3333}
+  vendor: Bitmain
+  model: Antminer S19j Pro
+  firmware: 2025.11
+  systemFilesystemVersion: 2025-11-01
+  serialPrefix: SIM
+  powerW: 3050
+  hashrateThs: 104
+  temperatureC: 67
+  reboot-downtime: 30s
+  poolUrl: stratum+tcp://pool.example.com:3333
 
   auth:
-    username: ${SIM_USERNAME:root}
-    password: ${SIM_PASSWORD:root}
+    username: root
+    password: root
 
   cgminer:
-    portsCsv: ${SIM_CGMINER_PORTS:4028,4029}
-    socketReadTimeoutMs: ${SIM_CGMINER_READ_TIMEOUT_MS:1000}
+    portsCsv: 4028,4029
+    socketReadTimeoutMs: 1000

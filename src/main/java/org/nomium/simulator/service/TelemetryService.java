@@ -3,6 +3,7 @@ package org.nomium.simulator.service;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 import org.nomium.simulator.config.SimProperties;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,14 @@ import java.util.concurrent.ThreadLocalRandom;
 public class TelemetryService {
 
     SimProperties props;
-    Instant startedAt = Instant.now();
+    AntminerStateService antState;
+
+    @NonFinal
+    volatile Instant startedAt = Instant.now();
+
+    public void setStartedAt(Instant startedAt) {
+        this.startedAt = startedAt == null ? Instant.now() : startedAt;
+    }
 
     public long uptimeSeconds() {
         long s = Duration.between(startedAt, Instant.now()).getSeconds();
@@ -50,10 +58,12 @@ public class TelemetryService {
     }
 
     public Map<String, Object> minerConf(String clientIp) {
+        var snap = antState.snapshot();
+
         List<Map<String, Object>> pools = List.of(
-                Map.of("url", props.getPoolUrl(), "user", "worker1", "pass", "x"),
-                Map.of("url", props.getPoolUrl(), "user", "worker2", "pass", "x"),
-                Map.of("url", props.getPoolUrl(), "user", "worker3", "pass", "x")
+                Map.of("url", snap.p1().getUrl(), "user", snap.p1().getUser(), "pass", snap.p1().getPw()),
+                Map.of("url", snap.p2().getUrl(), "user", snap.p2().getUser(), "pass", snap.p2().getPw()),
+                Map.of("url", snap.p3().getUrl(), "user", snap.p3().getUser(), "pass", snap.p3().getPw())
         );
 
         return new LinkedHashMap<>() {{
@@ -63,6 +73,21 @@ public class TelemetryService {
             put("vendor", props.getVendor());
             put("model", props.getModel());
             put("serial", deviceId(clientIp));
+
+            put("_ant_pool1url", snap.p1().getUrl());
+            put("_ant_pool1user", snap.p1().getUser());
+            put("_ant_pool1pw", snap.p1().getPw());
+
+            put("_ant_pool2url", snap.p2().getUrl());
+            put("_ant_pool2user", snap.p2().getUser());
+            put("_ant_pool2pw", snap.p2().getPw());
+
+            put("_ant_pool3url", snap.p3().getUrl());
+            put("_ant_pool3user", snap.p3().getUser());
+            put("_ant_pool3pw", snap.p3().getPw());
+
+            put("_ant_work_mode", snap.workMode());
+            put("bitmain-work-mode", snap.workMode());
         }};
     }
 
