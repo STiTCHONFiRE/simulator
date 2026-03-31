@@ -17,6 +17,7 @@ public class SimProperties {
     String firmware = "2025.11";
     String systemFilesystemVersion = "2025-11-01";
     String serialPrefix = "SIM";
+    String identitySeed = "simulator";
 
     double powerW = 3050;
     double hashrateThs = 104;

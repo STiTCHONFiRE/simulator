@@ -14,6 +14,7 @@ sim:
   firmware: 2025.11
   systemFilesystemVersion: 2025-11-01
   serialPrefix: SIM
+  identitySeed: ${SIM_IDENTITY_SEED:${HOSTNAME:${COMPUTERNAME:simulator}}}
   powerW: 3050
   hashrateThs: 104
   temperatureC: 67

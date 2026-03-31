@@ -1,6 +1,5 @@
 package org.nomium.simulator.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -8,7 +7,11 @@ import org.nomium.simulator.service.AntminerStateService;
 import org.nomium.simulator.service.RebootService;
 import org.nomium.simulator.service.TelemetryService;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
@@ -23,8 +26,8 @@ public class AntminerCgiController {
     RebootService rebootService;
 
     @GetMapping("/get_miner_conf.cgi")
-    public Map<String, Object> getMinerConf(HttpServletRequest req) {
-        return telemetryService.minerConf(localIp(req));
+    public Map<String, Object> getMinerConf() {
+        return telemetryService.minerConf();
     }
 
     @PostMapping(value = "/set_miner_conf.cgi", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -40,8 +43,8 @@ public class AntminerCgiController {
     }
 
     @GetMapping("/get_system_info.cgi")
-    public Map<String, Object> getSystemInfo(HttpServletRequest req) {
-        return telemetryService.systemInfo(localIp(req));
+    public Map<String, Object> getSystemInfo() {
+        return telemetryService.systemInfo();
     }
 
     @GetMapping("/get_multi_option.cgi")
@@ -49,20 +52,13 @@ public class AntminerCgiController {
         return Map.of("success", true);
     }
 
-    //TODO: подумать, должны ли мы отдавать тоже самое тут?
     @GetMapping({"/get_miner_status.cgi", "/minerStatus.cgi", "/stats.cgi"})
-    public Map<String, Object> minerStatusOld(HttpServletRequest req) {
-        return telemetryService.antminerStatusOld(localIp(req));
+    public Map<String, Object> minerStatusOld() {
+        return telemetryService.antminerStatusOld();
     }
 
     @GetMapping("/summary.cgi")
-    public Map<String, Object> minerSummaryNew(HttpServletRequest req) {
-        return telemetryService.antminerSummaryNew(localIp(req));
+    public Map<String, Object> minerSummaryNew() {
+        return telemetryService.antminerSummaryNew();
     }
-
-    private static String localIp(HttpServletRequest req) {
-        String ip = req.getLocalAddr();
-        return ip == null ? "0.0.0.0" : ip;
-    }
-
 }

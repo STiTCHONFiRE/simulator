@@ -4,8 +4,9 @@ services:
     container_name: asic1
     environment:
       SIM_SERIAL_PREFIX: SIM01
-      SIM_MODEL: "Antminer S19j Pro"
+      SIM_MODEL: "LibBTC"
       SIM_CGMINER_PORTS: "4028,4029"
+      SIM_IDENTITY_SEED: "tetqdstdstsdt"
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://localhost:80/actuator/health || exit 1
       interval: 30s
@@ -24,6 +25,7 @@ services:
       SIM_SERIAL_PREFIX: SIM02
       SIM_MODEL: "Antminer S19j Pro"
       SIM_CGMINER_PORTS: "4028,4029"
+      SIM_IDENTITY_SEED: "tetdsadsadasddt"
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://localhost:80/actuator/health || exit 1
       interval: 30s
@@ -42,6 +44,7 @@ services:
       SIM_SERIAL_PREFIX: SIM03
       SIM_MODEL: "Antminer S19j Pro"
       SIM_CGMINER_PORTS: "4028,4029"
+      SIM_IDENTITY_SEED: "tetddsal;lvcxl;fsdsdt"
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://localhost:80/actuator/health || exit 1
       interval: 30s

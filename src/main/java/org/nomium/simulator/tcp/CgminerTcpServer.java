@@ -89,8 +89,6 @@ public class CgminerTcpServer implements SmartLifecycle {
 
             s.setSoTimeout(props.getCgminer().getSocketReadTimeoutMs());
 
-            String clientIp = ((InetSocketAddress) s.getRemoteSocketAddress()).getAddress().getHostAddress();
-
             byte[] buf = new byte[4096];
             int n;
             try {
@@ -106,11 +104,11 @@ public class CgminerTcpServer implements SmartLifecycle {
 
             Map<String, Object> payload;
             if (text.contains("stats")) {
-                payload = telemetry.cgminerStats(clientIp);
+                payload = telemetry.cgminerStats();
             } else if (text.contains("devdetails") || text.contains("devs")) {
-                payload = telemetry.cgminerDevDetails(clientIp);
+                payload = telemetry.cgminerDevDetails();
             } else {
-                payload = telemetry.cgminerSummary(clientIp);
+                payload = telemetry.cgminerSummary();
             }
 
             byte[] out = objectMapper.writeValueAsBytes(payload);
@@ -157,5 +155,4 @@ public class CgminerTcpServer implements SmartLifecycle {
     public boolean isRunning() {
         return running;
     }
-
 }
