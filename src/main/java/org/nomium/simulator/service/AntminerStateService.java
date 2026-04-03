@@ -40,7 +40,7 @@ public class AntminerStateService {
         this.p1 = new Pool(props.getPoolUrl(), "worker1", "x");
         this.p2 = new Pool(props.getPoolUrl(), "worker2", "x");
         this.p3 = new Pool(props.getPoolUrl(), "worker3", "x");
-        this.workMode = "normal";
+        this.workMode = "normalT2";
     }
 
     public Snapshot snapshot() {
