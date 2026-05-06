@@ -57,7 +57,7 @@ public class MiscController {
             labels.append("this.modeList[")
                     .append(i)
                     .append("].text = $.i18n.prop(\"")
-                    .append(escapeJsString(option.name()))
+                    .append(escapeJsString(stockUiModeKey(option)))
                     .append("\");\n");
         }
 
@@ -78,6 +78,14 @@ public class MiscController {
             return safe;
         }
         return "\"" + escapeJsString(safe) + "\"";
+    }
+
+    private String stockUiModeKey(AntminerStateService.ModeOption option) {
+        return switch (antState.modeKind(option.value())) {
+            case "sleep" -> "modeSleep";
+            case "high" -> "modeHEM";
+            default -> "modeNormal";
+        };
     }
 
     private static String escapeJsString(String value) {

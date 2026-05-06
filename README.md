@@ -157,6 +157,17 @@ sim:
 - `/miner.html` подключает `/js/miner.js`, где есть `modeList` для stock UI parser.
 - `/cgi-bin/get_multi_option.cgi` отдаёт карту режимов для fallback parser.
 
+В дефолтном `/js/miner.js` mode list отдаётся в stock UI формате:
+
+```javascript
+modeList: [{id:0},{id:1},{id:3}]
+this.modeList[0].text = $.i18n.prop("modeNormal");
+this.modeList[1].text = $.i18n.prop("modeSleep");
+this.modeList[2].text = $.i18n.prop("modeHEM");
+```
+
+То есть для rules вида `allOptionsExact` агент видит `modeNormal -> 0`, `modeSleep -> 1`, `modeHEM -> 3`.
+
 Это важно для `DeviceModeCapabilitiesObservedEvent`: агент сначала пытается разобрать Antminer stock UI JavaScript, затем fallback `/cgi-bin/get_multi_option.cgi`. Симулятор отдаёт режимы в обоих форматах. Если raw values числовые, stock UI parser может получить capabilities из `/js/miner.js`; если raw values строковые, fallback CGI всё равно возвращает полный список режимов.
 
 ## Телеметрия

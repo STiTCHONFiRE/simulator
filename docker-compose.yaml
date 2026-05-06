@@ -4,7 +4,7 @@ services:
     container_name: asic1
     environment:
       SIM_SERIAL_PREFIX: SIM01
-      SIM_MODEL: "LibBTC"
+      SIM_MODEL: "Antminer S19j Pro"
       SIM_CGMINER_PORTS: "4028,4029"
       SIM_IDENTITY_SEED: "tetqdstdstsdt"
     healthcheck:
