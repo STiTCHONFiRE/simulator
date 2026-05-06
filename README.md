@@ -228,6 +228,42 @@ environment:
   SIM_POOL_URL: ""
 ```
 
+## Прошивка
+
+Симулятор поддерживает Antminer legacy CGI flow, который использует агент:
+
+1. Агент определяет протокол через `/cgi-bin/get_system_info.cgi`.
+2. Загружает файл на `/cgi-bin/upgrade.cgi` multipart-полем `datafile`.
+3. Вызывает `/cgi-bin/reboot.cgi`.
+4. Ждёт, пока `/cgi-bin/get_system_info.cgi` снова начнёт отвечать после reboot.
+
+Файл прошивки физически не устанавливается и не сохраняется на диск. Симулятор принимает upload, запоминает имя файла как pending firmware и применяет его после следующего reboot.
+
+Пример upload:
+
+```powershell
+curl.exe --digest -u root:root `
+  -F "datafile=@Antminer-S19j-Pro-2026.05.tar.gz;type=application/x-gzip" `
+  http://127.0.0.1/cgi-bin/upgrade.cgi
+```
+
+Успешный ответ совместим с парсером агента:
+
+```json
+{
+  "stats": "success",
+  "msg": "Firmware upload accepted. Rebooting System",
+  "success": true,
+  "status": "uploaded",
+  "file": "Antminer-S19j-Pro-2026.05.tar.gz",
+  "targetFirmware": "Antminer-S19j-Pro-2026.05"
+}
+```
+
+После upload текущие `sim.firmware` и `sim.systemFilesystemVersion` ещё не меняются. После `/cgi-bin/reboot.cgi` и окончания `sim.rebootDowntime` оба значения становятся равны inferred версии из имени файла. Для `Antminer-S19j-Pro-2026.05.tar.gz` это будет `Antminer-S19j-Pro-2026.05`.
+
+Текущее состояние симуляции можно посмотреть через `/cgi-bin/upgrade_status.cgi`.
+
 ## Antminer HTTP API
 
 Защищённые endpoint'ы требуют Digest auth с `sim.auth.username` и `sim.auth.password`.
@@ -243,6 +279,8 @@ environment:
 | `/cgi-bin/summary.cgi` | `GET` | Antminer summary. |
 | `/cgi-bin/stats.cgi` | `GET` | Antminer stats. |
 | `/cgi-bin/reboot.cgi` | `GET` | Имитация reboot на `sim.rebootDowntime`. |
+| `/cgi-bin/upgrade.cgi` | `POST` | Multipart upload прошивки. Поле файла должно называться `datafile`. |
+| `/cgi-bin/upgrade_status.cgi` | `GET` | Текущее состояние симуляции прошивки: `ready`, `uploaded`, `installing`, `installed`. |
 | `/miner.html` | `GET` | Минимальная stock UI страница для discovery. |
 | `/js/miner.js` | `GET` | JavaScript с `modeList` для Antminer stock UI parser. |
 | `/actuator/health` | `GET` | Healthcheck без авторизации. |
@@ -341,3 +379,5 @@ services:
 - Cgminer TCP соединение принимается, но payload не отдаётся.
 
 После истечения времени симулятор автоматически возвращается к текущим пулам и текущему режиму.
+
+Если перед reboot был успешный upload прошивки, pending firmware применяется в момент возврата устройства из rebooting state.

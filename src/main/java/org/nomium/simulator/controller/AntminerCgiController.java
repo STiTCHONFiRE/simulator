@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.nomium.simulator.service.AntminerStateService;
+import org.nomium.simulator.service.FirmwareSimulationService;
 import org.nomium.simulator.service.RebootService;
 import org.nomium.simulator.service.TelemetryService;
 import org.springframework.http.MediaType;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -24,6 +26,7 @@ public class AntminerCgiController {
     TelemetryService telemetryService;
     AntminerStateService antState;
     RebootService rebootService;
+    FirmwareSimulationService firmwareSimulationService;
 
     @GetMapping("/get_miner_conf.cgi")
     public Map<String, Object> getMinerConf() {
@@ -40,6 +43,16 @@ public class AntminerCgiController {
     public Map<String, Object> reboot() {
         rebootService.requestReboot();
         return Map.of("success", true);
+    }
+
+    @PostMapping(value = "/upgrade.cgi", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Map<String, Object> upgrade(@RequestParam("datafile") MultipartFile datafile) {
+        return firmwareSimulationService.acceptUpload(datafile);
+    }
+
+    @GetMapping("/upgrade_status.cgi")
+    public Map<String, Object> upgradeStatus() {
+        return firmwareSimulationService.status();
     }
 
     @GetMapping("/get_system_info.cgi")

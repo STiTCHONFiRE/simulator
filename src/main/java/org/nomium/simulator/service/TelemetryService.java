@@ -150,7 +150,7 @@ public class TelemetryService {
         result.put("miner_type", props.getModel());
         result.put("model", props.getModel());
         result.put("system_filesystem_version", props.getSystemFilesystemVersion());
-        result.put("firmware_version", props.getSystemFilesystemVersion());
+        result.put("firmware_version", props.getFirmware());
         result.put("nettype", "DHCP");
         result.put("proto", "DHCP");
         result.put("macaddr", mac);
