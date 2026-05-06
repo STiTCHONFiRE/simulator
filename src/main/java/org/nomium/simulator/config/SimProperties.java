@@ -18,10 +18,15 @@ public class SimProperties {
     String systemFilesystemVersion = "2025-11-01";
     String serialPrefix = "SIM";
     String identitySeed = "simulator";
+    String defaultWorkMode = "normal";
+    String modeOptions = "sleep,normal,high";
 
     double powerW = 3050;
     double hashrateThs = 104;
     double temperatureC = 67;
+    double telemetryJitterPercent = 2.0;
+    double idleTemperatureC = 30.0;
+    double idleTemperatureDeltaC = 15.0;
 
     Duration rebootDowntime = Duration.ofSeconds(15);
 

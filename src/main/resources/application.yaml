@@ -15,9 +15,14 @@ sim:
   systemFilesystemVersion: 2025-11-01
   serialPrefix: SIM
   identitySeed: ${SIM_IDENTITY_SEED:${HOSTNAME:${COMPUTERNAME:simulator}}}
+  defaultWorkMode: ${SIM_DEFAULT_WORK_MODE:normal}
+  modeOptions: "${SIM_MODE_OPTIONS:sleep,normal,high}"
   powerW: 3050
   hashrateThs: 104
   temperatureC: 67
+  telemetryJitterPercent: ${SIM_TELEMETRY_JITTER_PERCENT:2.0}
+  idleTemperatureC: ${SIM_IDLE_TEMPERATURE_C:30.0}
+  idleTemperatureDeltaC: ${SIM_IDLE_TEMPERATURE_DELTA_C:15.0}
   reboot-downtime: 30s
   poolUrl: stratum+tcp://pool.example.com:3333
 
@@ -26,5 +31,5 @@ sim:
     password: root
 
   cgminer:
-    portsCsv: 4028,4029
-    socketReadTimeoutMs: 1000
+    portsCsv: ${SIM_CGMINER_PORTS:${SIM_CGMINER_PORTS_CSV:4028,4029}}
+    socketReadTimeoutMs: ${SIM_CGMINER_SOCKET_READ_TIMEOUT_MS:1000}

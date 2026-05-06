@@ -103,7 +103,9 @@ public class CgminerTcpServer implements SmartLifecycle {
                     : "";
 
             Map<String, Object> payload;
-            if (text.contains("stats")) {
+            if (text.contains("pools")) {
+                payload = telemetry.cgminerPools();
+            } else if (text.contains("stats")) {
                 payload = telemetry.cgminerStats();
             } else if (text.contains("devdetails") || text.contains("devs")) {
                 payload = telemetry.cgminerDevDetails();

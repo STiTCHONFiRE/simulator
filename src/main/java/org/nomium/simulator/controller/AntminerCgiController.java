@@ -49,16 +49,21 @@ public class AntminerCgiController {
 
     @GetMapping("/get_multi_option.cgi")
     public Map<String, Object> getMultiOption() {
-        return Map.of("success", true);
+        return telemetryService.modeOptions();
     }
 
-    @GetMapping({"/get_miner_status.cgi", "/minerStatus.cgi", "/stats.cgi"})
-    public Map<String, Object> minerStatusOld() {
-        return telemetryService.antminerStatusOld();
+    @GetMapping({"/get_miner_status.cgi", "/minerStatus.cgi"})
+    public Map<String, Object> minerStatus() {
+        return telemetryService.antminerStatus();
     }
 
     @GetMapping("/summary.cgi")
-    public Map<String, Object> minerSummaryNew() {
-        return telemetryService.antminerSummaryNew();
+    public Map<String, Object> minerSummary() {
+        return telemetryService.antminerSummary();
+    }
+
+    @GetMapping("/stats.cgi")
+    public Map<String, Object> minerStats() {
+        return telemetryService.antminerStats();
     }
 }
