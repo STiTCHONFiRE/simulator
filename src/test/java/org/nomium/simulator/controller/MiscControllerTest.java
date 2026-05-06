@@ -24,9 +24,9 @@ class MiscControllerTest {
 
         String javascript = controller.minerJavascript();
 
-        assertTrue(javascript.contains("modeList: [{id:0},{id:1},{id:2}]"));
-        assertTrue(javascript.contains("this.modeList[0].text = $.i18n.prop(\"Sleep\")"));
-        assertTrue(javascript.contains("this.modeList[1].text = $.i18n.prop(\"Normal\")"));
+        assertTrue(javascript.contains("modeList: [{id:0},{id:1},{id:3}]"));
+        assertTrue(javascript.contains("this.modeList[0].text = $.i18n.prop(\"Normal\")"));
+        assertTrue(javascript.contains("this.modeList[1].text = $.i18n.prop(\"Sleep\")"));
         assertTrue(javascript.contains("this.modeList[2].text = $.i18n.prop(\"High\")"));
     }
 
@@ -38,8 +38,8 @@ class MiscControllerTest {
 
         String javascript = controller.minerJavascript();
 
-        assertTrue(javascript.contains("modeList: [{id:0},{id:1}]"));
-        assertFalse(javascript.contains("{id:2}"));
+        assertTrue(javascript.contains("modeList: [{id:1},{id:0}]"));
+        assertFalse(javascript.contains("{id:3}"));
         assertFalse(javascript.contains("$.i18n.prop(\"High\")"));
     }
 

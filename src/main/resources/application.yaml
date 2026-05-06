@@ -16,7 +16,7 @@ sim:
   serialPrefix: SIM
   identitySeed: ${SIM_IDENTITY_SEED:${HOSTNAME:${COMPUTERNAME:simulator}}}
   defaultWorkMode: ${SIM_DEFAULT_WORK_MODE:normal}
-  modeOptions: "${SIM_MODE_OPTIONS:sleep,normal,high}"
+  modeOptions: "${SIM_MODE_OPTIONS:0:Normal,1:Sleep,3:High}"
   powerW: 3050
   hashrateThs: 104
   temperatureC: 67

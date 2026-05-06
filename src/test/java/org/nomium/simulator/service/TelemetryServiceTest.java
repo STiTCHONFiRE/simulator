@@ -52,10 +52,12 @@ class TelemetryServiceTest {
         @SuppressWarnings("unchecked")
         List<Map<String, Object>> modeInfo = (List<Map<String, Object>>) modeOptions.get("ModeInfo");
 
-        assertEquals("1", modeOptions.get("CurrentMode"));
+        assertEquals("0", modeOptions.get("CurrentMode"));
+        assertEquals("Normal", modeOptions.get("CurrentModeName"));
         assertEquals(3, modeInfo.size());
         assertEquals("ModeName", modeInfo.getFirst().keySet().iterator().next());
         assertEquals("0", modeInfo.getFirst().get("ModeValue"));
+        assertEquals("Normal", modeInfo.getFirst().get("ModeName"));
     }
 
     @Test
@@ -86,11 +88,13 @@ class TelemetryServiceTest {
         @SuppressWarnings("unchecked")
         List<Map<String, Object>> modeInfo = (List<Map<String, Object>>) modeOptions.get("ModeInfo");
 
-        assertEquals("1", modeOptions.get("CurrentMode"));
+        assertEquals("0", modeOptions.get("CurrentMode"));
         assertEquals("Normal", modeOptions.get("CurrentModeName"));
         assertEquals(2, modeInfo.size());
-        assertEquals("0", modeInfo.get(0).get("ModeValue"));
-        assertEquals("1", modeInfo.get(1).get("ModeValue"));
+        assertEquals("1", modeInfo.get(0).get("ModeValue"));
+        assertEquals("Sleep", modeInfo.get(0).get("ModeName"));
+        assertEquals("0", modeInfo.get(1).get("ModeValue"));
+        assertEquals("Normal", modeInfo.get(1).get("ModeName"));
     }
 
     @Test
@@ -153,9 +157,9 @@ class TelemetryServiceTest {
         assertEquals("stratum+tcp://a.example:3333", conf.get("_ant_pool1url"));
         assertEquals("alice.worker", conf.get("_ant_pool1user"));
         assertEquals("secret", conf.get("_ant_pool1pw"));
-        assertEquals("2", conf.get("_ant_work_mode"));
+        assertEquals("3", conf.get("_ant_work_mode"));
         assertEquals("stratum+tcp://a.example:3333", pool.get("URL"));
-        assertEquals("2", stats.get("Mode"));
+        assertEquals("3", stats.get("Mode"));
     }
 
     @Test
@@ -196,12 +200,14 @@ class TelemetryServiceTest {
         AntminerStateService state = new AntminerStateService(props);
         TelemetryService telemetryService = new TelemetryService(props, state);
 
-        state.applyForm(Map.of("_ant_work_mode", "sleep"));
+        state.applyForm(Map.of("_ant_work_mode", "1"));
 
         Map<String, Object> summary = firstObject(telemetryService.antminerSummary(), "SUMMARY");
+        Map<String, Object> stats = firstObject(telemetryService.antminerStats(), "STATS");
 
         assertEquals(0.0, number(summary.get("rate_5s")));
         assertEquals(0.0, number(summary.get("rate_avg")));
+        assertEquals("1", stats.get("Mode"));
         assertBetween(number(summary.get("Temperature")), 15, 45);
         assertBetween(number(summary.get("Chip Temp Avg")), 15, 45);
     }

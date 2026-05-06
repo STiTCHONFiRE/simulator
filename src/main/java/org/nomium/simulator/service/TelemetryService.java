@@ -403,7 +403,7 @@ public class TelemetryService {
     private Metrics metrics(AntminerStateService.Snapshot snap) {
         String mode = snap.workMode();
         String modeKind = antState.modeKind(mode);
-        boolean idle = "0".equals(modeKind) || !snap.hasPools();
+        boolean idle = "sleep".equals(modeKind) || !snap.hasPools();
 
         double hashFactor;
         double powerBase;
@@ -421,7 +421,7 @@ public class TelemetryService {
             fanMax = 2300;
         } else {
             switch (modeKind) {
-                case "2" -> {
+                case "high" -> {
                     hashFactor = 1.12;
                     powerBase = props.getPowerW() * 1.12;
                     tempBase = props.getTemperatureC() + 5;

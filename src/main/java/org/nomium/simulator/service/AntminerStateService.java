@@ -38,9 +38,9 @@ public class AntminerStateService {
     }
 
     private static final List<ModeOption> DEFAULT_MODE_OPTIONS = List.of(
-            new ModeOption("0", "Sleep"),
-            new ModeOption("1", "Normal"),
-            new ModeOption("2", "High")
+            new ModeOption("0", "Normal"),
+            new ModeOption("1", "Sleep"),
+            new ModeOption("3", "High")
     );
 
     final Object lock = new Object();
@@ -50,7 +50,7 @@ public class AntminerStateService {
     Pool p3;
     List<ModeOption> modeOptions;
 
-    // Raw Antminer values usually are 0=sleep, 1=normal, 2=high, but the exposed list is configurable.
+    // The exposed raw values are configurable; the option label decides whether a value behaves as sleep, normal, or high.
     String workMode;
 
     public AntminerStateService(SimProperties props) {
@@ -112,19 +112,15 @@ public class AntminerStateService {
 
     public String modeKind(String value) {
         String raw = normalizeToken(value);
-        String direct = canonicalModeValue(raw);
-        if (direct != null) {
-            return direct;
-        }
-
         for (ModeOption option : modeOptions) {
-            if (option.value().equalsIgnoreCase(raw)) {
-                String fromName = canonicalModeValue(option.name());
-                return fromName == null ? "1" : fromName;
+            if (option.value().equalsIgnoreCase(raw) || option.name().equalsIgnoreCase(raw)) {
+                String kind = modeKind(option);
+                return kind == null ? "normal" : kind;
             }
         }
 
-        return "1";
+        String direct = knownModeKind(raw);
+        return direct == null ? "normal" : direct;
     }
 
     private static Pool mergePool(Pool old, int n, Map<String, String> form) {
@@ -155,11 +151,10 @@ public class AntminerStateService {
             }
         }
 
-        String canonical = canonicalModeValue(raw);
-        if (canonical != null) {
+        String kind = knownModeKind(raw);
+        if (kind != null) {
             for (ModeOption option : modeOptions) {
-                if (canonical.equals(canonicalModeValue(option.value())) ||
-                        canonical.equals(canonicalModeValue(option.name()))) {
+                if (kind.equals(modeKind(option))) {
                     return option.value();
                 }
             }
@@ -170,8 +165,7 @@ public class AntminerStateService {
 
     private ModeOption defaultModeOption() {
         return modeOptions.stream()
-                .filter(option -> "1".equals(canonicalModeValue(option.value())) ||
-                        "1".equals(canonicalModeValue(option.name())))
+                .filter(option -> "normal".equals(modeKind(option)))
                 .findFirst()
                 .orElse(modeOptions.getFirst());
     }
@@ -209,8 +203,8 @@ public class AntminerStateService {
             return new ModeOption(value, name);
         }
 
-        String canonical = canonicalModeValue(raw);
-        return new ModeOption(canonical == null ? raw : canonical, displayName(raw));
+        String kind = knownModeKind(raw);
+        return new ModeOption(defaultValueForKind(kind, raw), displayName(raw));
     }
 
     private static int separatorIndex(String raw) {
@@ -230,14 +224,14 @@ public class AntminerStateService {
     }
 
     private static String displayName(String raw) {
-        String canonical = canonicalModeValue(raw);
-        if ("0".equals(canonical)) {
+        String kind = knownModeKind(raw);
+        if ("sleep".equals(kind)) {
             return "Sleep";
         }
-        if ("1".equals(canonical)) {
+        if ("normal".equals(kind)) {
             return "Normal";
         }
-        if ("2".equals(canonical)) {
+        if ("high".equals(kind)) {
             return "High";
         }
 
@@ -248,12 +242,29 @@ public class AntminerStateService {
         return value.substring(0, 1).toUpperCase(Locale.ROOT) + value.substring(1);
     }
 
-    private static String canonicalModeValue(String value) {
+    private static String defaultValueForKind(String kind, String fallback) {
+        return switch (kind == null ? "" : kind) {
+            case "normal" -> "0";
+            case "sleep" -> "1";
+            case "high" -> "3";
+            default -> fallback;
+        };
+    }
+
+    private static String modeKind(ModeOption option) {
+        String fromName = knownModeKind(option.name());
+        if (fromName != null) {
+            return fromName;
+        }
+        return knownModeKind(option.value());
+    }
+
+    private static String knownModeKind(String value) {
         String m = normalizeToken(value);
         return switch (m) {
-            case "0", "254", "sleep", "standby", "low", "eco", "econom", "lpm", "modesleep", "mode_sleep" -> "0";
-            case "1", "normal", "standard", "balance", "balanced", "normalt2", "modenormal", "mode_normal" -> "1";
-            case "2", "3", "high", "turbo", "performance", "boost", "hem", "modehem", "mode_high", "modehigh" -> "2";
+            case "1", "254", "sleep", "standby", "low", "eco", "econom", "lpm", "modesleep", "mode_sleep" -> "sleep";
+            case "0", "normal", "standard", "balance", "balanced", "normalt2", "modenormal", "mode_normal" -> "normal";
+            case "2", "3", "high", "turbo", "performance", "boost", "hem", "modehem", "mode_high", "modehigh" -> "high";
             default -> null;
         };
     }

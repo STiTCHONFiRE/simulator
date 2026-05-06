@@ -19,7 +19,7 @@ public class SimProperties {
     String serialPrefix = "SIM";
     String identitySeed = "simulator";
     String defaultWorkMode = "normal";
-    String modeOptions = "sleep,normal,high";
+    String modeOptions = "0:Normal,1:Sleep,3:High";
 
     double powerW = 3050;
     double hashrateThs = 104;

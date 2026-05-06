@@ -45,7 +45,7 @@ docker compose up -d
 
 ```powershell
 $env:SIM_MODEL = "Antminer S21"
-$env:SIM_MODE_OPTIONS = "sleep,normal"
+$env:SIM_MODE_OPTIONS = "normal,sleep"
 $env:SIM_DEFAULT_WORK_MODE = "normal"
 .\mvnw.cmd spring-boot:run
 ```
@@ -60,7 +60,7 @@ services:
       SIM_MODEL: "Antminer S19j Pro"
       SIM_SERIAL_PREFIX: "SIM01"
       SIM_IDENTITY_SEED: "asic-01"
-      SIM_MODE_OPTIONS: "sleep,normal,high"
+      SIM_MODE_OPTIONS: "0:Normal,1:Sleep,3:High"
       SIM_DEFAULT_WORK_MODE: "normal"
       SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
       SIM_CGMINER_PORTS: "4028,4029"
@@ -84,7 +84,7 @@ services:
 | `sim.serialPrefix` | `SIM_SERIAL_PREFIX` | `SIM` | Префикс серийного номера устройства. |
 | `sim.identitySeed` | `SIM_IDENTITY_SEED` | `HOSTNAME`, затем `COMPUTERNAME`, затем `simulator` | Seed для стабильного MAC, device id и серийных данных. Для нескольких симуляторов должен быть разным. |
 | `sim.defaultWorkMode` | `SIM_DEFAULT_WORK_MODE` | `normal` | Стартовый режим работы. Может быть raw value или имя режима из `sim.modeOptions`. |
-| `sim.modeOptions` | `SIM_MODE_OPTIONS` | `sleep,normal,high` | Список режимов, которые видит агент и UI-парсер Antminer. Форматы описаны ниже. |
+| `sim.modeOptions` | `SIM_MODE_OPTIONS` | `0:Normal,1:Sleep,3:High` | Список режимов, которые видит агент и UI-парсер Antminer. Форматы описаны ниже. |
 | `sim.powerW` | `SIM_POWER_W` | `3050` | Базовая активная мощность в ваттах для normal mode. |
 | `sim.hashrateThs` | `SIM_HASHRATE_THS` | `104` | Базовый активный хешрейт в TH/s для normal mode. |
 | `sim.temperatureC` | `SIM_TEMPERATURE_C` | `67` | Базовая активная температура в градусах C для normal mode. |
@@ -102,18 +102,25 @@ services:
 
 Режимы полностью настраиваются через `sim.modeOptions`.
 
+Дефолтная карта режимов:
+
+```yaml
+sim:
+  modeOptions: "0:Normal,1:Sleep,3:High"
+```
+
 Короткий формат:
 
 ```yaml
 sim:
-  modeOptions: "sleep,normal,high"
+  modeOptions: "normal,sleep,high"
 ```
 
 В этом формате известные имена нормализуются в Antminer raw values:
 
-- `sleep` -> `0`
-- `normal` -> `1`
-- `high` -> `2`
+- `normal` -> `0`
+- `sleep` -> `1`
+- `high` -> `3`
 
 Можно оставить только часть режимов:
 
@@ -127,7 +134,7 @@ sim:
 
 ```yaml
 sim:
-  modeOptions: "0:Sleep,1:Normal,2:High"
+  modeOptions: "0:Normal,1:Sleep,3:High"
 ```
 
 ```yaml
@@ -138,11 +145,11 @@ sim:
 
 Поведение нормализации:
 
-- `defaultWorkMode` может быть raw value (`1`) или именем (`normal`, `Normal`, `standard`).
+- `defaultWorkMode` может быть raw value (`0`) или именем (`normal`, `Normal`, `standard`).
 - Если `defaultWorkMode` не найден среди настроенных режимов, выбирается normal-режим, если он есть, иначе первый режим из списка.
 - При переключении режима через Antminer config принимаются поля `_ant_work_mode`, `bitmain-work-mode`, `WorkModeValue`, `work_mode`, `work-mode`, `miner-mode`, `mode`.
-- Значения `sleep`, `standby`, `low`, `eco`, `lpm`, `0`, `254` считаются sleep-like.
-- Значения `normal`, `standard`, `balance`, `balanced`, `1` считаются normal-like.
+- Значения `sleep`, `standby`, `low`, `eco`, `lpm`, `1`, `254` считаются sleep-like.
+- Значения `normal`, `standard`, `balance`, `balanced`, `0` считаются normal-like.
 - Значения `high`, `turbo`, `performance`, `boost`, `hem`, `2`, `3` считаются high-like.
 
 Режимы отдаются сразу в двух местах, потому что агент проверяет capabilities разными способами:
@@ -260,7 +267,7 @@ $client.Close()
 
 ```yaml
 environment:
-  SIM_MODE_OPTIONS: "sleep,normal"
+  SIM_MODE_OPTIONS: "normal,sleep"
   SIM_DEFAULT_WORK_MODE: "normal"
 ```
 
