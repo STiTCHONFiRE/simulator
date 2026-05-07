@@ -1,0 +1,3029 @@
+# Generated from C:/Users/user/Downloads/2026-05-05-emulator-device-list-with-specs-active-temp-corrected.csv
+# Ports are intentionally commented out and should be filled manually before running.
+name: simulator-emulator-devices
+
+services:
+  asic-d001:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d001
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM01"
+      SIM_IDENTITY_SEED: "demo-c1-d01"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D001"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 1"
+      simulator.ip: "10.1.1.11"
+      simulator.full_serial_number: "SIM01-502985"
+      simulator.sim_identity: "SIM-7E9988C213CE498C"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.1.11:80:80"
+    #   - "10.1.1.11:4028:4028"
+    #   - "10.1.1.11:4029:4029"
+
+  asic-d002:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d002
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM02"
+      SIM_IDENTITY_SEED: "demo-c1-d02"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D002"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 1"
+      simulator.ip: "10.1.1.18"
+      simulator.full_serial_number: "SIM02-252122"
+      simulator.sim_identity: "SIM-40B0B51A98814F5E"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.1.18:80:80"
+    #   - "10.1.1.18:4028:4028"
+    #   - "10.1.1.18:4029:4029"
+
+  asic-d003:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d003
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM03"
+      SIM_IDENTITY_SEED: "demo-c1-d03"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D003"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 1"
+      simulator.ip: "10.1.1.27"
+      simulator.full_serial_number: "SIM03-589492"
+      simulator.sim_identity: "SIM-D435EC6F5B034E5E"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.1.27:80:80"
+    #   - "10.1.1.27:4028:4028"
+    #   - "10.1.1.27:4029:4029"
+
+  asic-d004:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d004
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM04"
+      SIM_IDENTITY_SEED: "demo-c1-d04"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D004"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 1"
+      simulator.ip: "10.1.1.34"
+      simulator.full_serial_number: "SIM04-254695"
+      simulator.sim_identity: "SIM-5F4E6BF316E0449D"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.1.34:80:80"
+    #   - "10.1.1.34:4028:4028"
+    #   - "10.1.1.34:4029:4029"
+
+  asic-d005:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d005
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM05"
+      SIM_IDENTITY_SEED: "demo-c1-d05"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D005"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 1"
+      simulator.ip: "10.1.1.49"
+      simulator.full_serial_number: "SIM05-185738"
+      simulator.sim_identity: "SIM-2F56F8F8541047ED"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.1.49:80:80"
+    #   - "10.1.1.49:4028:4028"
+    #   - "10.1.1.49:4029:4029"
+
+  asic-d006:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d006
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM06"
+      SIM_IDENTITY_SEED: "demo-c1-d06"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D006"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 1"
+      simulator.ip: "10.1.1.58"
+      simulator.full_serial_number: "SIM06-561515"
+      simulator.sim_identity: "SIM-256FD627C89D4CFD"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.1.58:80:80"
+    #   - "10.1.1.58:4028:4028"
+    #   - "10.1.1.58:4029:4029"
+
+  asic-d007:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d007
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM07"
+      SIM_IDENTITY_SEED: "demo-c1-d07"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D007"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 1"
+      simulator.ip: "10.1.1.67"
+      simulator.full_serial_number: "SIM07-085871"
+      simulator.sim_identity: "SIM-5A6ED2C0458C412C"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.1.67:80:80"
+    #   - "10.1.1.67:4028:4028"
+    #   - "10.1.1.67:4029:4029"
+
+  asic-d008:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d008
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM08"
+      SIM_IDENTITY_SEED: "demo-c1-d08"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D008"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 1"
+      simulator.ip: "10.1.1.74"
+      simulator.full_serial_number: "SIM08-522562"
+      simulator.sim_identity: "SIM-56E1A25BA931469C"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.1.74:80:80"
+    #   - "10.1.1.74:4028:4028"
+    #   - "10.1.1.74:4029:4029"
+
+  asic-d009:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d009
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19j Pro"
+      SIM_FIRMWARE: "2025.11"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "2025.11"
+      SIM_SERIAL_PREFIX: "SIM09"
+      SIM_IDENTITY_SEED: "demo-c1-d09"
+      SIM_HASHRATE_THS: "100"
+      SIM_POWER_W: "2950"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D009"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 1"
+      simulator.ip: "10.1.1.89"
+      simulator.full_serial_number: "SIM09-164999"
+      simulator.sim_identity: "SIM-EFA813EA5F67493C"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.1.89:80:80"
+    #   - "10.1.1.89:4028:4028"
+    #   - "10.1.1.89:4029:4029"
+
+  asic-d010:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d010
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19j Pro"
+      SIM_FIRMWARE: "2025.11"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "2025.11"
+      SIM_SERIAL_PREFIX: "SIM10"
+      SIM_IDENTITY_SEED: "demo-c1-d10"
+      SIM_HASHRATE_THS: "100"
+      SIM_POWER_W: "2950"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D010"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 1"
+      simulator.ip: "10.1.1.98"
+      simulator.full_serial_number: "SIM10-460661"
+      simulator.sim_identity: "SIM-A0EA2DB5E2344673"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.1.98:80:80"
+    #   - "10.1.1.98:4028:4028"
+    #   - "10.1.1.98:4029:4029"
+
+  asic-d011:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d011
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19j Pro"
+      SIM_FIRMWARE: "2025.11"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "2025.11"
+      SIM_SERIAL_PREFIX: "SIM11"
+      SIM_IDENTITY_SEED: "demo-c1-d11"
+      SIM_HASHRATE_THS: "100"
+      SIM_POWER_W: "2950"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D011"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 1"
+      simulator.ip: "10.1.1.117"
+      simulator.full_serial_number: "SIM11-835194"
+      simulator.sim_identity: "SIM-D327CF08EBB44543"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.1.117:80:80"
+    #   - "10.1.1.117:4028:4028"
+    #   - "10.1.1.117:4029:4029"
+
+  asic-d012:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d012
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S21"
+      SIM_FIRMWARE: "FR-1.12(251009-S21)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.12(251009-S21)"
+      SIM_SERIAL_PREFIX: "SIM12"
+      SIM_IDENTITY_SEED: "demo-c1-d12"
+      SIM_HASHRATE_THS: "200"
+      SIM_POWER_W: "3500"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D012"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 1"
+      simulator.ip: "10.1.1.126"
+      simulator.full_serial_number: "SIM12-852415"
+      simulator.sim_identity: "SIM-2585DD888D6F44B9"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.1.126:80:80"
+    #   - "10.1.1.126:4028:4028"
+    #   - "10.1.1.126:4029:4029"
+
+  asic-d013:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d013
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S21"
+      SIM_FIRMWARE: "FR-1.12(251009-S21)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.12(251009-S21)"
+      SIM_SERIAL_PREFIX: "SIM13"
+      SIM_IDENTITY_SEED: "demo-c1-d13"
+      SIM_HASHRATE_THS: "200"
+      SIM_POWER_W: "3500"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D013"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 1"
+      simulator.ip: "10.1.1.149"
+      simulator.full_serial_number: "SIM13-520009"
+      simulator.sim_identity: "SIM-2933060304654CB8"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.1.149:80:80"
+    #   - "10.1.1.149:4028:4028"
+    #   - "10.1.1.149:4029:4029"
+
+  asic-d014:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d014
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer T21"
+      SIM_FIRMWARE: "2025.11"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "2025.11"
+      SIM_SERIAL_PREFIX: "SIM14"
+      SIM_IDENTITY_SEED: "demo-c1-d14"
+      SIM_HASHRATE_THS: "190"
+      SIM_POWER_W: "3610"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D014"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 1"
+      simulator.ip: "10.1.1.158"
+      simulator.full_serial_number: "SIM14-255146"
+      simulator.sim_identity: "SIM-07BB6B91FD334FAB"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.1.158:80:80"
+    #   - "10.1.1.158:4028:4028"
+    #   - "10.1.1.158:4029:4029"
+
+  asic-d015:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d015
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer T21"
+      SIM_FIRMWARE: "2025.11"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "2025.11"
+      SIM_SERIAL_PREFIX: "SIM15"
+      SIM_IDENTITY_SEED: "demo-c1-d15"
+      SIM_HASHRATE_THS: "190"
+      SIM_POWER_W: "3610"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D015"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 1"
+      simulator.ip: "10.1.1.177"
+      simulator.full_serial_number: "SIM15-095289"
+      simulator.sim_identity: "SIM-9791E8B8F49A48F7"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.1.177:80:80"
+    #   - "10.1.1.177:4028:4028"
+    #   - "10.1.1.177:4029:4029"
+
+  asic-d016:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d016
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM16"
+      SIM_IDENTITY_SEED: "demo-c1-d16"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D016"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 1"
+      simulator.ip: "10.1.1.186"
+      simulator.full_serial_number: "SIM16-948245"
+      simulator.sim_identity: "SIM-33E8F86DF1D644BB"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.1.186:80:80"
+    #   - "10.1.1.186:4028:4028"
+    #   - "10.1.1.186:4029:4029"
+
+  asic-d017:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d017
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM17"
+      SIM_IDENTITY_SEED: "demo-c1-d17"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D017"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 1"
+      simulator.ip: "10.1.1.209"
+      simulator.full_serial_number: "SIM17-034194"
+      simulator.sim_identity: "SIM-7EF18DACEBA046C2"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.1.209:80:80"
+    #   - "10.1.1.209:4028:4028"
+    #   - "10.1.1.209:4029:4029"
+
+  asic-d018:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d018
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19j Pro"
+      SIM_FIRMWARE: "2025.11"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "2025.11"
+      SIM_SERIAL_PREFIX: "SIM18"
+      SIM_IDENTITY_SEED: "demo-c1-d18"
+      SIM_HASHRATE_THS: "100"
+      SIM_POWER_W: "2950"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D018"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 1"
+      simulator.ip: "10.1.1.218"
+      simulator.full_serial_number: "SIM18-385280"
+      simulator.sim_identity: "SIM-E621CA987B6946EF"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.1.218:80:80"
+    #   - "10.1.1.218:4028:4028"
+    #   - "10.1.1.218:4029:4029"
+
+  asic-d019:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d019
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM19"
+      SIM_IDENTITY_SEED: "demo-c2-d01"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D019"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 2"
+      simulator.ip: "10.1.2.11"
+      simulator.full_serial_number: "SIM19-118758"
+      simulator.sim_identity: "SIM-187E5C46381C42ED"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.2.11:80:80"
+    #   - "10.1.2.11:4028:4028"
+    #   - "10.1.2.11:4029:4029"
+
+  asic-d020:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d020
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM20"
+      SIM_IDENTITY_SEED: "demo-c2-d02"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D020"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 2"
+      simulator.ip: "10.1.2.18"
+      simulator.full_serial_number: "SIM20-522934"
+      simulator.sim_identity: "SIM-C1561E82348949DB"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.2.18:80:80"
+    #   - "10.1.2.18:4028:4028"
+    #   - "10.1.2.18:4029:4029"
+
+  asic-d021:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d021
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM21"
+      SIM_IDENTITY_SEED: "demo-c2-d03"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D021"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 2"
+      simulator.ip: "10.1.2.27"
+      simulator.full_serial_number: "SIM21-289119"
+      simulator.sim_identity: "SIM-B05BC243FF024970"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.2.27:80:80"
+    #   - "10.1.2.27:4028:4028"
+    #   - "10.1.2.27:4029:4029"
+
+  asic-d022:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d022
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM22"
+      SIM_IDENTITY_SEED: "demo-c2-d04"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D022"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 2"
+      simulator.ip: "10.1.2.34"
+      simulator.full_serial_number: "SIM22-478465"
+      simulator.sim_identity: "SIM-59E08B3854464756"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.2.34:80:80"
+    #   - "10.1.2.34:4028:4028"
+    #   - "10.1.2.34:4029:4029"
+
+  asic-d023:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d023
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM23"
+      SIM_IDENTITY_SEED: "demo-c2-d05"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D023"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 2"
+      simulator.ip: "10.1.2.49"
+      simulator.full_serial_number: "SIM23-746072"
+      simulator.sim_identity: "SIM-7AC29FD339E64721"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.2.49:80:80"
+    #   - "10.1.2.49:4028:4028"
+    #   - "10.1.2.49:4029:4029"
+
+  asic-d024:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d024
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM24"
+      SIM_IDENTITY_SEED: "demo-c2-d06"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D024"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 2"
+      simulator.ip: "10.1.2.58"
+      simulator.full_serial_number: "SIM24-758914"
+      simulator.sim_identity: "SIM-20C99B16F90B446D"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.2.58:80:80"
+    #   - "10.1.2.58:4028:4028"
+    #   - "10.1.2.58:4029:4029"
+
+  asic-d025:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d025
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM25"
+      SIM_IDENTITY_SEED: "demo-c2-d07"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D025"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 2"
+      simulator.ip: "10.1.2.67"
+      simulator.full_serial_number: "SIM25-560074"
+      simulator.sim_identity: "SIM-D2BC2CAEF97A4616"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.2.67:80:80"
+    #   - "10.1.2.67:4028:4028"
+    #   - "10.1.2.67:4029:4029"
+
+  asic-d026:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d026
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM26"
+      SIM_IDENTITY_SEED: "demo-c2-d08"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D026"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 2"
+      simulator.ip: "10.1.2.74"
+      simulator.full_serial_number: "SIM26-103247"
+      simulator.sim_identity: "SIM-294A6BC195CC443A"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.2.74:80:80"
+    #   - "10.1.2.74:4028:4028"
+    #   - "10.1.2.74:4029:4029"
+
+  asic-d027:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d027
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19j Pro"
+      SIM_FIRMWARE: "2025.11"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "2025.11"
+      SIM_SERIAL_PREFIX: "SIM27"
+      SIM_IDENTITY_SEED: "demo-c2-d09"
+      SIM_HASHRATE_THS: "100"
+      SIM_POWER_W: "2950"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D027"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 2"
+      simulator.ip: "10.1.2.89"
+      simulator.full_serial_number: "SIM27-698657"
+      simulator.sim_identity: "SIM-2E1FB871A2A84D2E"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.2.89:80:80"
+    #   - "10.1.2.89:4028:4028"
+    #   - "10.1.2.89:4029:4029"
+
+  asic-d028:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d028
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19j Pro"
+      SIM_FIRMWARE: "2025.11"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "2025.11"
+      SIM_SERIAL_PREFIX: "SIM28"
+      SIM_IDENTITY_SEED: "demo-c2-d10"
+      SIM_HASHRATE_THS: "100"
+      SIM_POWER_W: "2950"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D028"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 2"
+      simulator.ip: "10.1.2.98"
+      simulator.full_serial_number: "SIM28-078496"
+      simulator.sim_identity: "SIM-17B7B3A6FBF748A4"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.2.98:80:80"
+    #   - "10.1.2.98:4028:4028"
+    #   - "10.1.2.98:4029:4029"
+
+  asic-d029:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d029
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19j Pro"
+      SIM_FIRMWARE: "2025.11"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "2025.11"
+      SIM_SERIAL_PREFIX: "SIM29"
+      SIM_IDENTITY_SEED: "demo-c2-d11"
+      SIM_HASHRATE_THS: "100"
+      SIM_POWER_W: "2950"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D029"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 2"
+      simulator.ip: "10.1.2.117"
+      simulator.full_serial_number: "SIM29-249653"
+      simulator.sim_identity: "SIM-5230BC3BF1354F74"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.2.117:80:80"
+    #   - "10.1.2.117:4028:4028"
+    #   - "10.1.2.117:4029:4029"
+
+  asic-d030:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d030
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S21"
+      SIM_FIRMWARE: "FR-1.12(251009-S21)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.12(251009-S21)"
+      SIM_SERIAL_PREFIX: "SIM30"
+      SIM_IDENTITY_SEED: "demo-c2-d12"
+      SIM_HASHRATE_THS: "200"
+      SIM_POWER_W: "3500"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D030"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 2"
+      simulator.ip: "10.1.2.126"
+      simulator.full_serial_number: "SIM30-834820"
+      simulator.sim_identity: "SIM-4745F7FF071B47F0"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.2.126:80:80"
+    #   - "10.1.2.126:4028:4028"
+    #   - "10.1.2.126:4029:4029"
+
+  asic-d031:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d031
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S21"
+      SIM_FIRMWARE: "FR-1.12(251009-S21)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.12(251009-S21)"
+      SIM_SERIAL_PREFIX: "SIM31"
+      SIM_IDENTITY_SEED: "demo-c2-d13"
+      SIM_HASHRATE_THS: "200"
+      SIM_POWER_W: "3500"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D031"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 2"
+      simulator.ip: "10.1.2.149"
+      simulator.full_serial_number: "SIM31-529760"
+      simulator.sim_identity: "SIM-7F25639531D34B89"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.2.149:80:80"
+    #   - "10.1.2.149:4028:4028"
+    #   - "10.1.2.149:4029:4029"
+
+  asic-d032:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d032
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer T21"
+      SIM_FIRMWARE: "2025.11"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "2025.11"
+      SIM_SERIAL_PREFIX: "SIM32"
+      SIM_IDENTITY_SEED: "demo-c2-d14"
+      SIM_HASHRATE_THS: "190"
+      SIM_POWER_W: "3610"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D032"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 2"
+      simulator.ip: "10.1.2.158"
+      simulator.full_serial_number: "SIM32-411164"
+      simulator.sim_identity: "SIM-C26853B5F8B342EB"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.2.158:80:80"
+    #   - "10.1.2.158:4028:4028"
+    #   - "10.1.2.158:4029:4029"
+
+  asic-d033:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d033
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer T21"
+      SIM_FIRMWARE: "2025.11"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "2025.11"
+      SIM_SERIAL_PREFIX: "SIM33"
+      SIM_IDENTITY_SEED: "demo-c2-d15"
+      SIM_HASHRATE_THS: "190"
+      SIM_POWER_W: "3610"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D033"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 2"
+      simulator.ip: "10.1.2.177"
+      simulator.full_serial_number: "SIM33-296730"
+      simulator.sim_identity: "SIM-74E17A3E79E9408F"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.2.177:80:80"
+    #   - "10.1.2.177:4028:4028"
+    #   - "10.1.2.177:4029:4029"
+
+  asic-d034:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d034
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM34"
+      SIM_IDENTITY_SEED: "demo-c2-d16"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D034"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 2"
+      simulator.ip: "10.1.2.186"
+      simulator.full_serial_number: "SIM34-915830"
+      simulator.sim_identity: "SIM-5892557D7E8B41AE"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.2.186:80:80"
+    #   - "10.1.2.186:4028:4028"
+    #   - "10.1.2.186:4029:4029"
+
+  asic-d035:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d035
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM35"
+      SIM_IDENTITY_SEED: "demo-c2-d17"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D035"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 2"
+      simulator.ip: "10.1.2.209"
+      simulator.full_serial_number: "SIM35-219494"
+      simulator.sim_identity: "SIM-4624ED25FE3C4BDE"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.2.209:80:80"
+    #   - "10.1.2.209:4028:4028"
+    #   - "10.1.2.209:4029:4029"
+
+  asic-d036:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d036
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19j Pro"
+      SIM_FIRMWARE: "2025.11"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "2025.11"
+      SIM_SERIAL_PREFIX: "SIM36"
+      SIM_IDENTITY_SEED: "demo-c2-d18"
+      SIM_HASHRATE_THS: "100"
+      SIM_POWER_W: "2950"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D036"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 2"
+      simulator.ip: "10.1.2.218"
+      simulator.full_serial_number: "SIM36-665642"
+      simulator.sim_identity: "SIM-E5A015FF74E64F4A"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.2.218:80:80"
+    #   - "10.1.2.218:4028:4028"
+    #   - "10.1.2.218:4029:4029"
+
+  asic-d037:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d037
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM37"
+      SIM_IDENTITY_SEED: "demo-c3-d01"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D037"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 3"
+      simulator.ip: "10.1.3.11"
+      simulator.full_serial_number: "SIM37-467830"
+      simulator.sim_identity: "SIM-FB31BD3287AF4BC9"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.3.11:80:80"
+    #   - "10.1.3.11:4028:4028"
+    #   - "10.1.3.11:4029:4029"
+
+  asic-d038:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d038
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM38"
+      SIM_IDENTITY_SEED: "demo-c3-d02"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D038"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 3"
+      simulator.ip: "10.1.3.18"
+      simulator.full_serial_number: "SIM38-575849"
+      simulator.sim_identity: "SIM-E876CFAC8E154863"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.3.18:80:80"
+    #   - "10.1.3.18:4028:4028"
+    #   - "10.1.3.18:4029:4029"
+
+  asic-d039:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d039
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM39"
+      SIM_IDENTITY_SEED: "demo-c3-d03"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D039"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 3"
+      simulator.ip: "10.1.3.27"
+      simulator.full_serial_number: "SIM39-403972"
+      simulator.sim_identity: "SIM-F2F6F95301F2424F"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.3.27:80:80"
+    #   - "10.1.3.27:4028:4028"
+    #   - "10.1.3.27:4029:4029"
+
+  asic-d040:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d040
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM40"
+      SIM_IDENTITY_SEED: "demo-c3-d04"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D040"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 3"
+      simulator.ip: "10.1.3.34"
+      simulator.full_serial_number: "SIM40-793688"
+      simulator.sim_identity: "SIM-FF908F55E9EF42DB"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.3.34:80:80"
+    #   - "10.1.3.34:4028:4028"
+    #   - "10.1.3.34:4029:4029"
+
+  asic-d041:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d041
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM41"
+      SIM_IDENTITY_SEED: "demo-c3-d05"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D041"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 3"
+      simulator.ip: "10.1.3.49"
+      simulator.full_serial_number: "SIM41-177526"
+      simulator.sim_identity: "SIM-CFE9BC49BA2E4B77"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.3.49:80:80"
+    #   - "10.1.3.49:4028:4028"
+    #   - "10.1.3.49:4029:4029"
+
+  asic-d042:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d042
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM42"
+      SIM_IDENTITY_SEED: "demo-c3-d06"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D042"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 3"
+      simulator.ip: "10.1.3.58"
+      simulator.full_serial_number: "SIM42-358845"
+      simulator.sim_identity: "SIM-32490B822DFE4E9E"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.3.58:80:80"
+    #   - "10.1.3.58:4028:4028"
+    #   - "10.1.3.58:4029:4029"
+
+  asic-d043:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d043
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM43"
+      SIM_IDENTITY_SEED: "demo-c3-d07"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D043"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 3"
+      simulator.ip: "10.1.3.67"
+      simulator.full_serial_number: "SIM43-369517"
+      simulator.sim_identity: "SIM-23B4E239249C420F"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.3.67:80:80"
+    #   - "10.1.3.67:4028:4028"
+    #   - "10.1.3.67:4029:4029"
+
+  asic-d044:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d044
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM44"
+      SIM_IDENTITY_SEED: "demo-c3-d08"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D044"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 3"
+      simulator.ip: "10.1.3.74"
+      simulator.full_serial_number: "SIM44-114693"
+      simulator.sim_identity: "SIM-77CD3488983C4295"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.3.74:80:80"
+    #   - "10.1.3.74:4028:4028"
+    #   - "10.1.3.74:4029:4029"
+
+  asic-d045:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d045
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19j Pro"
+      SIM_FIRMWARE: "2025.11"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "2025.11"
+      SIM_SERIAL_PREFIX: "SIM45"
+      SIM_IDENTITY_SEED: "demo-c3-d09"
+      SIM_HASHRATE_THS: "100"
+      SIM_POWER_W: "2950"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D045"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 3"
+      simulator.ip: "10.1.3.89"
+      simulator.full_serial_number: "SIM45-335325"
+      simulator.sim_identity: "SIM-CC9344BFE8754C33"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.3.89:80:80"
+    #   - "10.1.3.89:4028:4028"
+    #   - "10.1.3.89:4029:4029"
+
+  asic-d046:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d046
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19j Pro"
+      SIM_FIRMWARE: "2025.11"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "2025.11"
+      SIM_SERIAL_PREFIX: "SIM46"
+      SIM_IDENTITY_SEED: "demo-c3-d10"
+      SIM_HASHRATE_THS: "100"
+      SIM_POWER_W: "2950"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D046"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 3"
+      simulator.ip: "10.1.3.98"
+      simulator.full_serial_number: "SIM46-745281"
+      simulator.sim_identity: "SIM-C7FC8D7ECE6E43AB"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.3.98:80:80"
+    #   - "10.1.3.98:4028:4028"
+    #   - "10.1.3.98:4029:4029"
+
+  asic-d047:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d047
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19j Pro"
+      SIM_FIRMWARE: "2025.11"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "2025.11"
+      SIM_SERIAL_PREFIX: "SIM47"
+      SIM_IDENTITY_SEED: "demo-c3-d11"
+      SIM_HASHRATE_THS: "100"
+      SIM_POWER_W: "2950"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D047"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 3"
+      simulator.ip: "10.1.3.117"
+      simulator.full_serial_number: "SIM47-273274"
+      simulator.sim_identity: "SIM-D656E73B119240FE"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.3.117:80:80"
+    #   - "10.1.3.117:4028:4028"
+    #   - "10.1.3.117:4029:4029"
+
+  asic-d048:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d048
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S21"
+      SIM_FIRMWARE: "FR-1.12(251009-S21)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.12(251009-S21)"
+      SIM_SERIAL_PREFIX: "SIM48"
+      SIM_IDENTITY_SEED: "demo-c3-d12"
+      SIM_HASHRATE_THS: "200"
+      SIM_POWER_W: "3500"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D048"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 3"
+      simulator.ip: "10.1.3.126"
+      simulator.full_serial_number: "SIM48-363127"
+      simulator.sim_identity: "SIM-762AA7C96BD0403F"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.3.126:80:80"
+    #   - "10.1.3.126:4028:4028"
+    #   - "10.1.3.126:4029:4029"
+
+  asic-d049:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d049
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S21"
+      SIM_FIRMWARE: "FR-1.12(251009-S21)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.12(251009-S21)"
+      SIM_SERIAL_PREFIX: "SIM49"
+      SIM_IDENTITY_SEED: "demo-c3-d13"
+      SIM_HASHRATE_THS: "200"
+      SIM_POWER_W: "3500"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D049"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 3"
+      simulator.ip: "10.1.3.149"
+      simulator.full_serial_number: "SIM49-408194"
+      simulator.sim_identity: "SIM-01FCC4E7C35945E0"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.3.149:80:80"
+    #   - "10.1.3.149:4028:4028"
+    #   - "10.1.3.149:4029:4029"
+
+  asic-d050:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d050
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer T21"
+      SIM_FIRMWARE: "2025.11"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "2025.11"
+      SIM_SERIAL_PREFIX: "SIM50"
+      SIM_IDENTITY_SEED: "demo-c3-d14"
+      SIM_HASHRATE_THS: "190"
+      SIM_POWER_W: "3610"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D050"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 3"
+      simulator.ip: "10.1.3.158"
+      simulator.full_serial_number: "SIM50-707508"
+      simulator.sim_identity: "SIM-DD5EA583EC554E5B"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.3.158:80:80"
+    #   - "10.1.3.158:4028:4028"
+    #   - "10.1.3.158:4029:4029"
+
+  asic-d051:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d051
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer T21"
+      SIM_FIRMWARE: "2025.11"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "2025.11"
+      SIM_SERIAL_PREFIX: "SIM51"
+      SIM_IDENTITY_SEED: "demo-c3-d15"
+      SIM_HASHRATE_THS: "190"
+      SIM_POWER_W: "3610"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D051"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 3"
+      simulator.ip: "10.1.3.177"
+      simulator.full_serial_number: "SIM51-414714"
+      simulator.sim_identity: "SIM-AB3FB32BC8564C99"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.3.177:80:80"
+    #   - "10.1.3.177:4028:4028"
+    #   - "10.1.3.177:4029:4029"
+
+  asic-d052:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d052
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM52"
+      SIM_IDENTITY_SEED: "demo-c3-d16"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D052"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 3"
+      simulator.ip: "10.1.3.186"
+      simulator.full_serial_number: "SIM52-754165"
+      simulator.sim_identity: "SIM-C6876962F0B74C5F"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.3.186:80:80"
+    #   - "10.1.3.186:4028:4028"
+    #   - "10.1.3.186:4029:4029"
+
+  asic-d053:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d053
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM53"
+      SIM_IDENTITY_SEED: "demo-c3-d17"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D053"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 3"
+      simulator.ip: "10.1.3.209"
+      simulator.full_serial_number: "SIM53-253515"
+      simulator.sim_identity: "SIM-6E9FBB4A95FD41E6"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.3.209:80:80"
+    #   - "10.1.3.209:4028:4028"
+    #   - "10.1.3.209:4029:4029"
+
+  asic-d054:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d054
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19j Pro"
+      SIM_FIRMWARE: "2025.11"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "2025.11"
+      SIM_SERIAL_PREFIX: "SIM54"
+      SIM_IDENTITY_SEED: "demo-c3-d18"
+      SIM_HASHRATE_THS: "100"
+      SIM_POWER_W: "2950"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D054"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 3"
+      simulator.ip: "10.1.3.218"
+      simulator.full_serial_number: "SIM54-421942"
+      simulator.sim_identity: "SIM-47A902D5340C4535"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.3.218:80:80"
+    #   - "10.1.3.218:4028:4028"
+    #   - "10.1.3.218:4029:4029"
+
+  asic-d055:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d055
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM55"
+      SIM_IDENTITY_SEED: "demo-c4-d01"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D055"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 4"
+      simulator.ip: "10.1.4.11"
+      simulator.full_serial_number: "SIM55-496351"
+      simulator.sim_identity: "SIM-60C229B7A6A04EA9"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.4.11:80:80"
+    #   - "10.1.4.11:4028:4028"
+    #   - "10.1.4.11:4029:4029"
+
+  asic-d056:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d056
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM56"
+      SIM_IDENTITY_SEED: "demo-c4-d02"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D056"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 4"
+      simulator.ip: "10.1.4.18"
+      simulator.full_serial_number: "SIM56-421102"
+      simulator.sim_identity: "SIM-7FCD5FEF27194A48"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.4.18:80:80"
+    #   - "10.1.4.18:4028:4028"
+    #   - "10.1.4.18:4029:4029"
+
+  asic-d057:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d057
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM57"
+      SIM_IDENTITY_SEED: "demo-c4-d03"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D057"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 4"
+      simulator.ip: "10.1.4.27"
+      simulator.full_serial_number: "SIM57-194935"
+      simulator.sim_identity: "SIM-0C5A3A67B4634A6D"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.4.27:80:80"
+    #   - "10.1.4.27:4028:4028"
+    #   - "10.1.4.27:4029:4029"
+
+  asic-d058:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d058
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM58"
+      SIM_IDENTITY_SEED: "demo-c4-d04"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D058"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 4"
+      simulator.ip: "10.1.4.34"
+      simulator.full_serial_number: "SIM58-201094"
+      simulator.sim_identity: "SIM-A62A80C7B14641D2"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.4.34:80:80"
+    #   - "10.1.4.34:4028:4028"
+    #   - "10.1.4.34:4029:4029"
+
+  asic-d059:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d059
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM59"
+      SIM_IDENTITY_SEED: "demo-c4-d05"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D059"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 4"
+      simulator.ip: "10.1.4.49"
+      simulator.full_serial_number: "SIM59-494753"
+      simulator.sim_identity: "SIM-A85C2EF273E44F77"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.4.49:80:80"
+    #   - "10.1.4.49:4028:4028"
+    #   - "10.1.4.49:4029:4029"
+
+  asic-d060:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d060
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM60"
+      SIM_IDENTITY_SEED: "demo-c4-d06"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D060"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 4"
+      simulator.ip: "10.1.4.58"
+      simulator.full_serial_number: "SIM60-674997"
+      simulator.sim_identity: "SIM-95A764388B1F4E17"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.4.58:80:80"
+    #   - "10.1.4.58:4028:4028"
+    #   - "10.1.4.58:4029:4029"
+
+  asic-d061:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d061
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM61"
+      SIM_IDENTITY_SEED: "demo-c4-d07"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D061"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 4"
+      simulator.ip: "10.1.4.67"
+      simulator.full_serial_number: "SIM61-968558"
+      simulator.sim_identity: "SIM-276F0582A3B74A6B"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.4.67:80:80"
+    #   - "10.1.4.67:4028:4028"
+    #   - "10.1.4.67:4029:4029"
+
+  asic-d062:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d062
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM62"
+      SIM_IDENTITY_SEED: "demo-c4-d08"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D062"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 4"
+      simulator.ip: "10.1.4.74"
+      simulator.full_serial_number: "SIM62-129949"
+      simulator.sim_identity: "SIM-1317842BBE004FE0"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.4.74:80:80"
+    #   - "10.1.4.74:4028:4028"
+    #   - "10.1.4.74:4029:4029"
+
+  asic-d063:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d063
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19j Pro"
+      SIM_FIRMWARE: "2025.11"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "2025.11"
+      SIM_SERIAL_PREFIX: "SIM63"
+      SIM_IDENTITY_SEED: "demo-c4-d09"
+      SIM_HASHRATE_THS: "100"
+      SIM_POWER_W: "2950"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D063"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 4"
+      simulator.ip: "10.1.4.89"
+      simulator.full_serial_number: "SIM63-775710"
+      simulator.sim_identity: "SIM-B836B1A97D86451C"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.4.89:80:80"
+    #   - "10.1.4.89:4028:4028"
+    #   - "10.1.4.89:4029:4029"
+
+  asic-d064:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d064
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19j Pro"
+      SIM_FIRMWARE: "2025.11"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "2025.11"
+      SIM_SERIAL_PREFIX: "SIM64"
+      SIM_IDENTITY_SEED: "demo-c4-d10"
+      SIM_HASHRATE_THS: "100"
+      SIM_POWER_W: "2950"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D064"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 4"
+      simulator.ip: "10.1.4.98"
+      simulator.full_serial_number: "SIM64-785248"
+      simulator.sim_identity: "SIM-F63E0E0DBB6E4F0B"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.4.98:80:80"
+    #   - "10.1.4.98:4028:4028"
+    #   - "10.1.4.98:4029:4029"
+
+  asic-d065:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d065
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S21"
+      SIM_FIRMWARE: "FR-1.12(251009-S21)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.12(251009-S21)"
+      SIM_SERIAL_PREFIX: "SIM65"
+      SIM_IDENTITY_SEED: "demo-c4-d11"
+      SIM_HASHRATE_THS: "200"
+      SIM_POWER_W: "3500"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D065"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 4"
+      simulator.ip: "10.1.4.117"
+      simulator.full_serial_number: "SIM65-916271"
+      simulator.sim_identity: "SIM-791C59BFD79B4F67"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.4.117:80:80"
+    #   - "10.1.4.117:4028:4028"
+    #   - "10.1.4.117:4029:4029"
+
+  asic-d066:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d066
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S21"
+      SIM_FIRMWARE: "FR-1.12(251009-S21)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.12(251009-S21)"
+      SIM_SERIAL_PREFIX: "SIM66"
+      SIM_IDENTITY_SEED: "demo-c4-d12"
+      SIM_HASHRATE_THS: "200"
+      SIM_POWER_W: "3500"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D066"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 4"
+      simulator.ip: "10.1.4.126"
+      simulator.full_serial_number: "SIM66-539047"
+      simulator.sim_identity: "SIM-51A895463190482B"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.4.126:80:80"
+    #   - "10.1.4.126:4028:4028"
+    #   - "10.1.4.126:4029:4029"
+
+  asic-d067:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d067
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S21"
+      SIM_FIRMWARE: "FR-1.12(251009-S21)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.12(251009-S21)"
+      SIM_SERIAL_PREFIX: "SIM67"
+      SIM_IDENTITY_SEED: "demo-c4-d13"
+      SIM_HASHRATE_THS: "200"
+      SIM_POWER_W: "3500"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D067"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 4"
+      simulator.ip: "10.1.4.149"
+      simulator.full_serial_number: "SIM67-230970"
+      simulator.sim_identity: "SIM-4C4BE9F53FB446E3"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.4.149:80:80"
+    #   - "10.1.4.149:4028:4028"
+    #   - "10.1.4.149:4029:4029"
+
+  asic-d068:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d068
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S21"
+      SIM_FIRMWARE: "FR-1.12(251009-S21)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.12(251009-S21)"
+      SIM_SERIAL_PREFIX: "SIM68"
+      SIM_IDENTITY_SEED: "demo-c4-d14"
+      SIM_HASHRATE_THS: "200"
+      SIM_POWER_W: "3500"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D068"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 4"
+      simulator.ip: "10.1.4.158"
+      simulator.full_serial_number: "SIM68-776981"
+      simulator.sim_identity: "SIM-046D79591EA44218"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.4.158:80:80"
+    #   - "10.1.4.158:4028:4028"
+    #   - "10.1.4.158:4029:4029"
+
+  asic-d069:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d069
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer T21"
+      SIM_FIRMWARE: "2025.11"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "2025.11"
+      SIM_SERIAL_PREFIX: "SIM69"
+      SIM_IDENTITY_SEED: "demo-c4-d15"
+      SIM_HASHRATE_THS: "190"
+      SIM_POWER_W: "3610"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D069"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 4"
+      simulator.ip: "10.1.4.177"
+      simulator.full_serial_number: "SIM69-697607"
+      simulator.sim_identity: "SIM-D6E0377A4F124A26"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.4.177:80:80"
+    #   - "10.1.4.177:4028:4028"
+    #   - "10.1.4.177:4029:4029"
+
+  asic-d070:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d070
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer T21"
+      SIM_FIRMWARE: "2025.11"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "2025.11"
+      SIM_SERIAL_PREFIX: "SIM70"
+      SIM_IDENTITY_SEED: "demo-c4-d16"
+      SIM_HASHRATE_THS: "190"
+      SIM_POWER_W: "3610"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D070"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 4"
+      simulator.ip: "10.1.4.186"
+      simulator.full_serial_number: "SIM70-695748"
+      simulator.sim_identity: "SIM-0814BC3A84B74A7A"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.4.186:80:80"
+    #   - "10.1.4.186:4028:4028"
+    #   - "10.1.4.186:4029:4029"
+
+  asic-d071:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d071
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19k Pro"
+      SIM_FIRMWARE: "FR-1.28(251010-S19k Pro)"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "FR-1.28(251010-S19k Pro)"
+      SIM_SERIAL_PREFIX: "SIM71"
+      SIM_IDENTITY_SEED: "demo-c4-d17"
+      SIM_HASHRATE_THS: "120"
+      SIM_POWER_W: "2760"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D071"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 4"
+      simulator.ip: "10.1.4.209"
+      simulator.full_serial_number: "SIM71-122373"
+      simulator.sim_identity: "SIM-96D69ADD4719427F"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.4.209:80:80"
+    #   - "10.1.4.209:4028:4028"
+    #   - "10.1.4.209:4029:4029"
+
+  asic-d072:
+    image: ghcr.io/stitchonfire/simulator:native
+    container_name: asic-d072
+    restart: unless-stopped
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer S19j Pro"
+      SIM_FIRMWARE: "2025.11"
+      SIM_SYSTEM_FILESYSTEM_VERSION: "2025.11"
+      SIM_SERIAL_PREFIX: "SIM72"
+      SIM_IDENTITY_SEED: "demo-c4-d18"
+      SIM_HASHRATE_THS: "100"
+      SIM_POWER_W: "2950"
+      SIM_TEMPERATURE_C: "70"
+      SIM_DEFAULT_WORK_MODE: "normal"
+      SIM_POOL_URL: "stratum+tcp://pool.example.com:3333"
+      SIM_TELEMETRY_JITTER_PERCENT: "2.0"
+      SIM_IDLE_TEMPERATURE_C: "30.0"
+      SIM_IDLE_TEMPERATURE_DELTA_C: "15.0"
+      SIM_REBOOT_DOWNTIME: "30s"
+      SIM_AUTH_USERNAME: "root"
+      SIM_AUTH_PASSWORD: "root"
+      SIM_CGMINER_PORTS: "4028,4029"
+      SIM_CGMINER_SOCKET_READ_TIMEOUT_MS: "1000"
+    labels:
+      simulator.device_code: "D072"
+      simulator.facility: "Demo Facility 1"
+      simulator.container: "Container 4"
+      simulator.ip: "10.1.4.218"
+      simulator.full_serial_number: "SIM72-843409"
+      simulator.sim_identity: "SIM-B2732D260C8E423D"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/test || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    # ports:
+    #   - "10.1.4.218:80:80"
+    #   - "10.1.4.218:4028:4028"
+    #   - "10.1.4.218:4029:4029"
+
