@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.2</version>
+        <version>4.0.6</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.nomium</groupId>
@@ -30,7 +30,7 @@
         <java.version>25</java.version>
         <!-- Jib -->
         <jib.version>3.5.1</jib.version>
-        <!-- локальный дефолт; в CI переопределим -->
+        <!-- Local default; CI overrides this. -->
         <image.name>local/${project.artifactId}</image.name>
     </properties>
     <dependencies>
@@ -60,12 +60,6 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
@@ -86,6 +80,10 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>org.graalvm.buildtools</groupId>
+                <artifactId>native-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
@@ -97,35 +95,45 @@
                     </excludes>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>com.google.cloud.tools</groupId>
-                <artifactId>jib-maven-plugin</artifactId>
-                <version>${jib.version}</version>
-
-                <configuration>
-                    <from>
-                        <image>eclipse-temurin:25</image>
-                    </from>
-
-                    <to>
-                        <image>${image.name}</image>
-                        <tags>
-                            <tag>latest</tag>
-                            <tag>${project.version}</tag>
-                        </tags>
-                    </to>
-
-                    <container>
-                        <ports>
-                            <port>80</port>
-                            <port>4028</port>
-                            <port>4029</port>
-                        </ports>
-                        <user>root</user>
-                    </container>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>jvm-fallback</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.google.cloud.tools</groupId>
+                        <artifactId>jib-maven-plugin</artifactId>
+                        <version>${jib.version}</version>
+
+                        <configuration>
+                            <from>
+                                <image>eclipse-temurin:25</image>
+                            </from>
+
+                            <to>
+                                <image>${image.name}</image>
+                                <tags>
+                                    <tag>latest</tag>
+                                    <tag>${project.version}</tag>
+                                </tags>
+                            </to>
+
+                            <container>
+                                <ports>
+                                    <port>80</port>
+                                    <port>4028</port>
+                                    <port>4029</port>
+                                </ports>
+                                <user>root</user>
+                            </container>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>

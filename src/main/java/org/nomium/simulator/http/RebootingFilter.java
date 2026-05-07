@@ -21,7 +21,7 @@ public class RebootingFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String p = request.getRequestURI();
-        return p.startsWith("/actuator/health");
+        return p.equals("/test") || p.equals("/test.html");
     }
 
     @Override

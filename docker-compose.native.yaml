@@ -1,6 +1,6 @@
 services:
   asic1:
-    image: ghcr.io/stitchonfire/simulator:latest
+    image: ghcr.io/stitchonfire/simulator:native
     container_name: asic1
     environment:
       SIM_SERIAL_PREFIX: SIM01
@@ -19,7 +19,7 @@ services:
       - "127.0.0.2:4029:4029"
 
   asic2:
-    image: ghcr.io/stitchonfire/simulator:latest
+    image: ghcr.io/stitchonfire/simulator:native
     container_name: asic2
     environment:
       SIM_SERIAL_PREFIX: SIM02
@@ -38,7 +38,7 @@ services:
       - "127.0.0.3:4029:4029"
 
   asic3:
-    image: ghcr.io/stitchonfire/simulator:latest
+    image: ghcr.io/stitchonfire/simulator:native
     container_name: asic3
     environment:
       SIM_SERIAL_PREFIX: SIM03

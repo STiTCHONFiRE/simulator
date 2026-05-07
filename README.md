@@ -283,7 +283,6 @@ curl.exe --digest -u root:root `
 | `/cgi-bin/upgrade_status.cgi` | `GET` | Текущее состояние симуляции прошивки: `ready`, `uploaded`, `installing`, `installed`. |
 | `/miner.html` | `GET` | Минимальная stock UI страница для discovery. |
 | `/js/miner.js` | `GET` | JavaScript с `modeList` для Antminer stock UI parser. |
-| `/actuator/health` | `GET` | Healthcheck без авторизации. |
 | `/test`, `/test.html` | `GET` | Простая тестовая HTML-страница без авторизации. |
 
 ## Cgminer TCP API
@@ -375,7 +374,7 @@ services:
 
 Во время reboot:
 
-- HTTP endpoint'ы, кроме `/actuator/health`, отвечают `503` и JSON `{"success":false,"error":"rebooting"}`;
+- HTTP endpoint'ы, кроме `/test` и `/test.html`, отвечают `503` и JSON `{"success":false,"error":"rebooting"}`;
 - Cgminer TCP соединение принимается, но payload не отдаётся.
 
 После истечения времени симулятор автоматически возвращается к текущим пулам и текущему режиму.
