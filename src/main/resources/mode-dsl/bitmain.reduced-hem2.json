@@ -1,0 +1,16 @@
+{
+  "key": "bitmain.reduced-hem2",
+  "priority": 100,
+  "when": {
+    "allOptionsExact": [
+      { "name": "modeNormal", "value": "0" },
+      { "name": "modeHEM", "value": "2" }
+    ]
+  },
+  "then": {
+    "supportedModes": {
+      "Normal": "0",
+      "High": "2"
+    }
+  }
+}

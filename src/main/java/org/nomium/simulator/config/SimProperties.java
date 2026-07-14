@@ -16,6 +16,7 @@ public class SimProperties {
     String model = "Antminer S19j Pro";
     String firmware = "2025.11";
     String systemFilesystemVersion = "2025-11-01";
+    String subtype = "AMLCtrl_BHB42XXX";
     String serialPrefix = "SIM";
     String identitySeed = "simulator";
     String defaultWorkMode = "normal";
@@ -23,6 +24,7 @@ public class SimProperties {
 
     double powerW = 3050;
     double hashrateThs = 104;
+    double hashrateKsol = 840;
     double temperatureC = 67;
     double telemetryJitterPercent = 2.0;
     double idleTemperatureC = 30.0;
@@ -34,6 +36,7 @@ public class SimProperties {
 
     final Auth auth = new Auth();
     final Cgminer cgminer = new Cgminer();
+    final ModeDsl modeDsl = new ModeDsl();
 
     @Data
     public static final class Auth {
@@ -45,6 +48,12 @@ public class SimProperties {
     public static final class Cgminer {
         private String portsCsv = "4028,4029";
         private int socketReadTimeoutMs = 1000;
+    }
+
+    @Data
+    public static final class ModeDsl {
+        private String rulesPath = "classpath:mode-dsl";
+        private String ruleKey = "";
     }
 
 }

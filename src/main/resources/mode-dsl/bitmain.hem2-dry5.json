@@ -1,0 +1,19 @@
+{
+  "key": "bitmain.hem2-dry5",
+  "priority": 100,
+  "when": {
+    "allOptionsExact": [
+      { "name": "modeNormal", "value": "0" },
+      { "name": "modeSleep", "value": "1" },
+      { "name": "modeHEM", "value": "2" },
+      { "name": "modeDRY", "value": "5" }
+    ]
+  },
+  "then": {
+    "supportedModes": {
+      "Sleep": "1",
+      "Normal": "0",
+      "High": "2"
+    }
+  }
+}

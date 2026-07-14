@@ -13,12 +13,14 @@ sim:
   model: Antminer S19j Pro
   firmware: 2025.11
   systemFilesystemVersion: 2025-11-01
+  subtype: ${SIM_SUBTYPE:AMLCtrl_BHB42XXX}
   serialPrefix: SIM
   identitySeed: ${SIM_IDENTITY_SEED:${HOSTNAME:${COMPUTERNAME:simulator}}}
   defaultWorkMode: ${SIM_DEFAULT_WORK_MODE:normal}
   modeOptions: "${SIM_MODE_OPTIONS:0:Normal,1:Sleep,3:High}"
   powerW: 3050
   hashrateThs: 104
+  hashrateKsol: ${SIM_HASHRATE_KSOL:840}
   temperatureC: 67
   telemetryJitterPercent: ${SIM_TELEMETRY_JITTER_PERCENT:2.0}
   idleTemperatureC: ${SIM_IDLE_TEMPERATURE_C:30.0}
@@ -33,3 +35,7 @@ sim:
   cgminer:
     portsCsv: ${SIM_CGMINER_PORTS:${SIM_CGMINER_PORTS_CSV:4028,4029}}
     socketReadTimeoutMs: ${SIM_CGMINER_SOCKET_READ_TIMEOUT_MS:1000}
+
+  modeDsl:
+    rulesPath: ${SIM_MODE_DSL_RULES_PATH:classpath:mode-dsl}
+    ruleKey: ${SIM_MODE_DSL_RULE_KEY:}

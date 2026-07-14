@@ -1,7 +1,7 @@
 services:
   asic1:
     image: ghcr.io/stitchonfire/simulator:native
-    container_name: asic1
+    container_name: asicz1
     environment:
       SIM_SERIAL_PREFIX: SIM01
       SIM_MODEL: "Antminer S19j Pro"

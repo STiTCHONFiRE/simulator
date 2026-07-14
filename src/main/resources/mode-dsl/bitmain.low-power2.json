@@ -1,0 +1,18 @@
+{
+  "key": "bitmain.low-power2",
+  "priority": 100,
+  "when": {
+    "allOptionsExact": [
+      { "name": "modeNormal", "value": "0" },
+      { "name": "modeSleep", "value": "1" },
+      { "name": "modeLowPower", "value": "2" }
+    ]
+  },
+  "then": {
+    "supportedModes": {
+      "Sleep": "1",
+      "Low": "2",
+      "Normal": "0"
+    }
+  }
+}

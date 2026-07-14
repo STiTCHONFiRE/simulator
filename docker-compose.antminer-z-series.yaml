@@ -1,0 +1,19 @@
+services:
+  antminer-z15-pro:
+    image: ghcr.io/stitchonfire/simulator:latest
+    environment:
+      SIM_VENDOR: "Bitmain"
+      SIM_MODEL: "Antminer Z15 Pro"
+      SIM_HASHRATE_KSOL: "840"
+      SIM_POWER_W: "2560"
+      SIM_TEMPERATURE_C: "65"
+      SIM_SERIAL_PREFIX: "Z15PRO"
+      SIM_IDENTITY_SEED: "antminer-z15-pro-01"
+      SIM_POOL_URL: "stratum+tcp://zec.pool.example.com:3333"
+      SIM_MODE_DSL_RULE_KEY: "bitmain.normal-sleep-only"
+      SIM_DEFAULT_WORK_MODE: "Normal"
+      SIM_CGMINER_PORTS: "4028,4029"
+    ports:
+      - "127.0.0.20:80:80"
+      - "127.0.0.20:4028:4028"
+      - "127.0.0.20:4029:4029"

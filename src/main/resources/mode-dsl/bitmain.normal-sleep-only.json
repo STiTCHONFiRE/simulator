@@ -1,0 +1,16 @@
+{
+  "key": "bitmain.normal-sleep-only",
+  "priority": 100,
+  "when": {
+    "allOptionsExact": [
+      { "name": "modeNormal", "value": "0" },
+      { "name": "modeSleep", "value": "1" }
+    ]
+  },
+  "then": {
+    "supportedModes": {
+      "Sleep": "1",
+      "Normal": "0"
+    }
+  }
+}

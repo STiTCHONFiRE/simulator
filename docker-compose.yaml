@@ -14,9 +14,9 @@ services:
       start_period: 30s
       retries: 5
     ports:
-      - "127.0.0.2:80:80"
-      - "127.0.0.2:4028:4028"
-      - "127.0.0.2:4029:4029"
+      - "127.0.0.3:80:80"
+      - "127.0.0.3:4028:4028"
+      - "127.0.0.3:4029:4029"
 
   asic2:
     image: ghcr.io/stitchonfire/simulator:latest
@@ -33,9 +33,9 @@ services:
       start_period: 30s
       retries: 5
     ports:
-      - "127.0.0.3:80:80"
-      - "127.0.0.3:4028:4028"
-      - "127.0.0.3:4029:4029"
+      - "127.0.0.2:80:80"
+      - "127.0.0.2:4028:4028"
+      - "127.0.0.2:4029:4029"
 
   asic3:
     image: ghcr.io/stitchonfire/simulator:latest

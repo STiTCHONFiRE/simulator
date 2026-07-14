@@ -20,6 +20,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +28,10 @@ import java.util.concurrent.ThreadLocalRandom;
 public class TelemetryService {
 
     private static final HexFormat MAC_FORMAT = HexFormat.ofDelimiter(":").withUpperCase();
+    private static final Pattern ANTMINER_Z_SERIES = Pattern.compile(
+            "^\\s*Antminer\\s*Z\\d+",
+            Pattern.CASE_INSENSITIVE
+    );
 
     SimProperties props;
     AntminerStateService antState;
@@ -130,7 +135,7 @@ public class TelemetryService {
         List<Map<String, Object>> modeInfo = new ArrayList<>();
         for (AntminerStateService.ModeOption option : antState.modeOptions()) {
             Map<String, Object> item = new LinkedHashMap<>();
-            item.put("ModeName", option.name());
+            item.put("ModeName", option.rawName());
             item.put("ModeValue", option.value());
             modeInfo.add(item);
         }
@@ -140,6 +145,9 @@ public class TelemetryService {
         result.put("ModeInfo", modeInfo);
         result.put("CurrentMode", snap.workMode());
         result.put("CurrentModeName", antState.modeName(snap.workMode()));
+        if (antState.modeDslRuleKey() != null) {
+            result.put("DslRuleKey", antState.modeDslRuleKey());
+        }
         return result;
     }
 
@@ -149,12 +157,38 @@ public class TelemetryService {
         result.put("minertype", props.getModel());
         result.put("miner_type", props.getModel());
         result.put("model", props.getModel());
+        result.put("subtype", props.getSubtype());
         result.put("system_filesystem_version", props.getSystemFilesystemVersion());
         result.put("firmware_version", props.getFirmware());
         result.put("nettype", "DHCP");
         result.put("proto", "DHCP");
         result.put("macaddr", mac);
         result.put("mac", mac);
+        return result;
+    }
+
+    public Map<String, Object> minerType() {
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("miner_type", props.getModel());
+        result.put("minertype", props.getModel());
+        result.put("subtype", props.getSubtype());
+        result.put("fw_version", props.getFirmware());
+        return result;
+    }
+
+    public Map<String, Object> chart() {
+        Metrics metrics = metrics(antState.snapshot());
+        Map<String, Object> point = new LinkedHashMap<>();
+        point.put("timestamp", Instant.now().getEpochSecond());
+        point.put("rate_5s", metrics.hashrate5s());
+        point.put("rate_avg", metrics.hashrateAvg());
+        point.put("rate_unit", metrics.rateUnit());
+        point.put("temperature", metrics.boardTempC());
+        point.put("power", metrics.powerW());
+
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("success", true);
+        result.put("chart", List.of(point));
         return result;
     }
 
@@ -166,6 +200,7 @@ public class TelemetryService {
 
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("STATUS", List.of(status("Miner status", 11, "antminer")));
+        result.put("INFO", minerInfo(metrics));
         result.put("summary", summary);
         result.put("devs", List.of(antminerLegacyDevObject(metrics)));
         result.put("SUMMARY", List.of(summary));
@@ -179,6 +214,7 @@ public class TelemetryService {
 
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("STATUS", List.of(status("Summary", 11, "antminer")));
+        result.put("INFO", minerInfo(metrics));
         result.put("SUMMARY", List.of(summary));
         result.put("summary", summary);
         return result;
@@ -189,6 +225,7 @@ public class TelemetryService {
 
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("STATUS", List.of(status("Stats", 7, "antminer")));
+        result.put("INFO", minerInfo(metrics));
         result.put("STATS", List.of(antminerStatsObject(metrics)));
         return result;
     }
@@ -224,10 +261,10 @@ public class TelemetryService {
             dev.put("Name", props.getModel() + " chain " + (i + 1));
             dev.put("Model", props.getModel());
             dev.put("Temperature", chipTemp(metrics, i - 1));
-            dev.put("MHS av", round(metrics.hashrateAvgThs() * 1_000_000.0 / 3.0, 3));
+            dev.put("MHS av", round(legacyMhs(metrics, metrics.hashrateAvg()) / 3.0, 3));
             dev.put("Power", round(metrics.powerW() / 3.0, 2));
             dev.put("Enabled", "Y");
-            dev.put("Status", metrics.hashrateAvgThs() > 0 ? "Alive" : "Idle");
+            dev.put("Status", metrics.hashrateAvg() > 0 ? "Alive" : "Idle");
             dev.put("Type", props.getModel());
             devs.add(dev);
         }
@@ -243,17 +280,22 @@ public class TelemetryService {
     public Map<String, Object> cgminerStats() {
         var metrics = metrics(antState.snapshot());
         Map<String, Object> stats = new LinkedHashMap<>();
-        stats.put("ID", "STATS");
+        stats.put("ID", metrics.equihash() ? "ZCASH0" : "STATS");
         stats.put("Elapsed", uptimeSeconds());
         stats.put("Type", props.getModel());
+        stats.put("Algorithm", metrics.algorithm());
         stats.put("Firmware", props.getFirmware());
         stats.put("Firmware Version", props.getFirmware());
         stats.put("MAC", macFor());
-        stats.put("RT", metrics.hashrate5sThs());
-        stats.put("AVG", metrics.hashrateAvgThs());
-        stats.put("rate_5s", metrics.hashrate5sThs());
-        stats.put("rate_avg", metrics.hashrateAvgThs());
-        stats.put("rate_unit", "TH/s");
+        if (!metrics.equihash()) {
+            stats.put("RT", metrics.hashrate5s());
+            stats.put("AVG", metrics.hashrateAvg());
+        }
+        stats.put("GHS 5s", legacyGhs(metrics, metrics.hashrate5s()));
+        stats.put("GHS av", legacyGhs(metrics, metrics.hashrateAvg()));
+        stats.put("rate_5s", metrics.hashrate5s());
+        stats.put("rate_avg", metrics.hashrateAvg());
+        stats.put("rate_unit", metrics.rateUnit());
         stats.put("temp1", metrics.boardTempC());
         stats.put("temp2", round(metrics.boardTempC() + 1.2, 2));
         stats.put("temp3", round(metrics.boardTempC() - 0.8, 2));
@@ -291,13 +333,14 @@ public class TelemetryService {
     private Map<String, Object> cgminerSummaryObject(Metrics metrics) {
         Map<String, Object> summary = new LinkedHashMap<>();
         summary.put("Elapsed", uptimeSeconds());
-        summary.put("MHS 5s", round(metrics.hashrate5sThs() * 1_000_000.0, 3));
-        summary.put("MHS av", round(metrics.hashrateAvgThs() * 1_000_000.0, 3));
-        summary.put("GHS 5s", round(metrics.hashrate5sThs() * 1_000.0, 3));
-        summary.put("GHS av", round(metrics.hashrateAvgThs() * 1_000.0, 3));
-        summary.put("rate_5s", metrics.hashrate5sThs());
-        summary.put("rate_avg", metrics.hashrateAvgThs());
-        summary.put("rate_unit", "TH/s");
+        summary.put("MHS 5s", legacyMhs(metrics, metrics.hashrate5s()));
+        summary.put("MHS av", legacyMhs(metrics, metrics.hashrateAvg()));
+        summary.put("GHS 5s", legacyGhs(metrics, metrics.hashrate5s()));
+        summary.put("GHS av", legacyGhs(metrics, metrics.hashrateAvg()));
+        summary.put("rate_5s", metrics.hashrate5s());
+        summary.put("rate_avg", metrics.hashrateAvg());
+        summary.put("rate_unit", metrics.rateUnit());
+        summary.put("Algorithm", metrics.algorithm());
         summary.put("Power", metrics.powerW());
         summary.put("Temperature", metrics.boardTempC());
         summary.put("Chip Temp Avg", metrics.chipTempC());
@@ -324,14 +367,16 @@ public class TelemetryService {
         Map<String, Object> summary = new LinkedHashMap<>();
         summary.put("elapsed", uptimeSeconds());
         summary.put("Elapsed", uptimeSeconds());
-        summary.put("rate_5s", metrics.hashrate5sThs());
-        summary.put("rate_avg", metrics.hashrateAvgThs());
-        summary.put("rate_30m", metrics.hashrateAvgThs());
-        summary.put("rate_unit", "TH/s");
-        summary.put("ghs5s", round(metrics.hashrate5sThs() * 1_000.0, 3));
-        summary.put("ghsav", round(metrics.hashrateAvgThs() * 1_000.0, 3));
-        summary.put("GHS 5s", round(metrics.hashrate5sThs() * 1_000.0, 3));
-        summary.put("GHS av", round(metrics.hashrateAvgThs() * 1_000.0, 3));
+        summary.put("rate_5s", metrics.hashrate5s());
+        summary.put("rate_avg", metrics.hashrateAvg());
+        summary.put("rate_30m", metrics.hashrateAvg());
+        summary.put("rate_unit", metrics.rateUnit());
+        summary.put("ghs5s", legacyGhs(metrics, metrics.hashrate5s()));
+        summary.put("ghsav", legacyGhs(metrics, metrics.hashrateAvg()));
+        summary.put("GHS 5s", legacyGhs(metrics, metrics.hashrate5s()));
+        summary.put("GHS av", legacyGhs(metrics, metrics.hashrateAvg()));
+        summary.put("Type", props.getModel());
+        summary.put("Algorithm", metrics.algorithm());
         summary.put("Temperature", metrics.boardTempC());
         summary.put("Chip Temp Avg", metrics.chipTempC());
         summary.put("temp1", metrics.boardTempC());
@@ -357,7 +402,7 @@ public class TelemetryService {
 
     private Map<String, Object> antminerStatsObject(Metrics metrics) {
         Map<String, Object> stats = new LinkedHashMap<>(antminerSummaryObject(metrics));
-        stats.put("ID", "STATS");
+        stats.put("ID", metrics.equihash() ? "ZCASH0" : "STATS");
         stats.put("fan", List.of(metrics.fanIn(), metrics.fanOut(), metrics.fan3(), metrics.fan4()));
 
         List<Map<String, Object>> chains = new ArrayList<>();
@@ -421,6 +466,14 @@ public class TelemetryService {
             fanMax = 2300;
         } else {
             switch (modeKind) {
+                case "low" -> {
+                    hashFactor = 0.80;
+                    powerBase = props.getPowerW() * 0.72;
+                    tempBase = Math.max(20, props.getTemperatureC() - 6);
+                    chipTempOffset = 8.0;
+                    fanMin = 3600;
+                    fanMax = 5200;
+                }
                 case "high" -> {
                     hashFactor = 1.12;
                     powerBase = props.getPowerW() * 1.12;
@@ -440,7 +493,9 @@ public class TelemetryService {
             }
         }
 
-        double hashBase = props.getHashrateThs() * hashFactor;
+        boolean equihash = isAntminerZSeries();
+        double configuredHashrate = equihash ? props.getHashrateKsol() : props.getHashrateThs();
+        double hashBase = configuredHashrate * hashFactor;
         double hashrate5s = hashBase <= 0 ? 0 : shiftByRandomPercent(hashBase, props.getTelemetryJitterPercent(), 0);
         double hashrateAvg = hashBase <= 0 ? 0 : shiftByRandomPercent(hashBase, props.getTelemetryJitterPercent(), 0);
         double boardTemp = idle
@@ -463,8 +518,33 @@ public class TelemetryService {
                 ThreadLocalRandom.current().nextInt(fanMin, fanMax),
                 mode,
                 antState.modeName(mode),
-                idle
+                idle,
+                equihash,
+                equihash ? "KSol/s" : "TH/s",
+                equihash ? "Equihash" : "SHA-256"
         );
+    }
+
+    private boolean isAntminerZSeries() {
+        String model = props.getModel();
+        return model != null && ANTMINER_Z_SERIES.matcher(model).find();
+    }
+
+    private static double legacyGhs(Metrics metrics, double hashrate) {
+        return round(metrics.equihash() ? hashrate : hashrate * 1_000.0, 3);
+    }
+
+    private static double legacyMhs(Metrics metrics, double hashrate) {
+        return round(metrics.equihash() ? hashrate : hashrate * 1_000_000.0, 3);
+    }
+
+    private Map<String, Object> minerInfo(Metrics metrics) {
+        Map<String, Object> info = new LinkedHashMap<>();
+        info.put("miner_version", props.getFirmware());
+        info.put("CompileTime", props.getSystemFilesystemVersion());
+        info.put("type", props.getModel());
+        info.put("algorithm", metrics.algorithm());
+        return info;
     }
 
     private double idleTemperature(double offset) {
@@ -498,7 +578,7 @@ public class TelemetryService {
         double delta = Math.max(0, props.getIdleTemperatureDeltaC());
         double min = Math.max(0, props.getIdleTemperatureC() - delta);
         double max = props.getIdleTemperatureC() + delta;
-        return round(Math.max(min, Math.min(max, value)), 2);
+        return round(Math.clamp(max, min, value), 2);
     }
 
     private static Map<String, Object> pool(AntminerStateService.Pool pool) {
@@ -530,8 +610,8 @@ public class TelemetryService {
     }
 
     private record Metrics(
-            double hashrate5sThs,
-            double hashrateAvgThs,
+            double hashrate5s,
+            double hashrateAvg,
             double powerW,
             double boardTempC,
             double chipTempC,
@@ -541,7 +621,10 @@ public class TelemetryService {
             int fan4,
             String workMode,
             String workModeName,
-            boolean idle
+            boolean idle,
+            boolean equihash,
+            String rateUnit,
+            String algorithm
     ) {
     }
 }

@@ -1,0 +1,16 @@
+{
+  "key": "bitmain.reduced-low-power3",
+  "priority": 100,
+  "when": {
+    "allOptionsExact": [
+      { "name": "modeNormal", "value": "0" },
+      { "name": "modeLowPower", "value": "3" }
+    ]
+  },
+  "then": {
+    "supportedModes": {
+      "Normal": "0",
+      "Low": "3"
+    }
+  }
+}

@@ -81,12 +81,16 @@ services:
 | `sim.model` | `SIM_MODEL` | `Antminer S19j Pro` | Модель устройства. Влияет на ответы Antminer и Cgminer. |
 | `sim.firmware` | `SIM_FIRMWARE` | `2025.11` | Версия firmware в system info, summary, stats и статусах. |
 | `sim.systemFilesystemVersion` | `SIM_SYSTEM_FILESYSTEM_VERSION` | `2025-11-01` | Версия файловой системы Antminer. |
+| `sim.subtype` | `SIM_SUBTYPE` | `AMLCtrl_BHB42XXX` | Hardware subtype из `/cgi-bin/miner_type.cgi`, нужен BMU firmware flow актуального агента. |
 | `sim.serialPrefix` | `SIM_SERIAL_PREFIX` | `SIM` | Префикс серийного номера устройства. |
 | `sim.identitySeed` | `SIM_IDENTITY_SEED` | `HOSTNAME`, затем `COMPUTERNAME`, затем `simulator` | Seed для стабильного MAC, device id и серийных данных. Для нескольких симуляторов должен быть разным. |
 | `sim.defaultWorkMode` | `SIM_DEFAULT_WORK_MODE` | `normal` | Стартовый режим работы. Может быть raw value или имя режима из `sim.modeOptions`. |
 | `sim.modeOptions` | `SIM_MODE_OPTIONS` | `0:Normal,1:Sleep,3:High` | Список режимов, которые видит агент и UI-парсер Antminer. Форматы описаны ниже. |
+| `sim.modeDsl.rulesPath` | `SIM_MODE_DSL_RULES_PATH` | `classpath:mode-dsl` | Каталог или JSON-файл с mode DSL. Поддерживаются `classpath:`, обычный путь и `file:` URI. |
+| `sim.modeDsl.ruleKey` | `SIM_MODE_DSL_RULE_KEY` | пусто | Ключ выбранного DSL-правила, например `bitmain.low-power3`. Если задан, DSL имеет приоритет над `sim.modeOptions`. |
 | `sim.powerW` | `SIM_POWER_W` | `3050` | Базовая активная мощность в ваттах для normal mode. |
 | `sim.hashrateThs` | `SIM_HASHRATE_THS` | `104` | Базовый активный хешрейт в TH/s для normal mode. |
+| `sim.hashrateKsol` | `SIM_HASHRATE_KSOL` | `840` | Базовый активный хешрейт в KSol/s для Antminer Z-серии. Используется автоматически, если `sim.model` соответствует `Antminer Z<номер>`. |
 | `sim.temperatureC` | `SIM_TEMPERATURE_C` | `67` | Базовая активная температура в градусах C для normal mode. |
 | `sim.telemetryJitterPercent` | `SIM_TELEMETRY_JITTER_PERCENT` | `2.0` | Случайный сдвиг телеметрии на каждый ответ. Значение `2.0` даёт диапазон примерно `-2%..+2%`. |
 | `sim.idleTemperatureC` | `SIM_IDLE_TEMPERATURE_C` | `30.0` | Центр температуры в idle-состоянии. |
@@ -100,7 +104,35 @@ services:
 
 ## Режимы работы
 
-Режимы полностью настраиваются через `sim.modeOptions`.
+Режимы настраиваются через совместимый с monitoring-backend DSL или, для обратной совместимости, через `sim.modeOptions`.
+
+### DSL-конфиги monitoring-backend
+
+В образ встроены актуальные Antminer-правила `bitmain.*` из `RRMonitoring.Equipment.Api/mode-dsl`. Для запуска конкретного профиля достаточно указать его ключ:
+
+```yaml
+environment:
+  SIM_MODE_DSL_RULE_KEY: "bitmain.low-power3"
+  SIM_DEFAULT_WORK_MODE: "Low"
+```
+
+Поддерживаются правила схемы monitoring-backend с полями `key`, `priority`, `when.allOptionsExact` и `then.supportedModes`. Пары `name/value` отдаются без нормализации одновременно в `/js/miner.js` и `/cgi-bin/get_multi_option.cgi`, поэтому server-side exact matcher получает ровно тот набор, который описан в DSL.
+
+Чтобы использовать конфиги прямо из внешнего каталога без копирования в образ:
+
+```yaml
+services:
+  asic:
+    volumes:
+      - ./mode-dsl:/config/mode-dsl:ro
+    environment:
+      SIM_MODE_DSL_RULES_PATH: "/config/mode-dsl"
+      SIM_MODE_DSL_RULE_KEY: "bitmain.hem2-dry5"
+```
+
+Если `SIM_MODE_DSL_RULE_KEY` пуст, используется прежний `sim.modeOptions`.
+
+### Ручная карта режимов
 
 Дефолтная карта режимов:
 
@@ -148,7 +180,8 @@ sim:
 - `defaultWorkMode` может быть raw value (`0`) или именем (`normal`, `Normal`, `standard`).
 - Если `defaultWorkMode` не найден среди настроенных режимов, выбирается normal-режим, если он есть, иначе первый режим из списка.
 - При переключении режима через Antminer config принимаются поля `_ant_work_mode`, `bitmain-work-mode`, `WorkModeValue`, `work_mode`, `work-mode`, `miner-mode`, `mode`.
-- Значения `sleep`, `standby`, `low`, `eco`, `lpm`, `1`, `254` считаются sleep-like.
+- Значения `sleep`, `standby`, `1`, `254` считаются sleep-like.
+- Значения `low`, `lowPower`, `eco`, `lpm` считаются low-power-like: майнинг продолжается со сниженным хешрейтом и энергопотреблением.
 - Значения `normal`, `standard`, `balance`, `balanced`, `0` считаются normal-like.
 - Значения `high`, `turbo`, `performance`, `boost`, `hem`, `2`, `3` считаются high-like.
 
@@ -172,6 +205,21 @@ this.modeList[2].text = $.i18n.prop("modeHEM");
 
 ## Телеметрия
 
+Для моделей вида `Antminer Z<номер>` симулятор автоматически включает профиль Equihash:
+
+- `rate_5s`, `rate_avg` и `rate_30m` отдаются в `KSol/s`;
+- Cgminer stats содержит маркеры `Type: Antminer Z...` и `ID: ZCASH0`;
+- базовый хешрейт берётся из `sim.hashrateKsol`, а `sim.hashrateThs` для Z-серии не используется;
+- DSL-режимы работают так же, как для SHA-256 Antminer: sleep обнуляет KSol, low/high изменяют базовое значение.
+
+Готовый пример находится в `docker-compose.antminer-z-series.yaml`:
+
+```powershell
+docker compose -f docker-compose.antminer-z-series.yaml up -d
+```
+
+В примере запускается `Antminer Z15 Pro` на `127.0.0.20` с номиналом `840 KSol/s` и встроенным DSL-профилем `bitmain.normal-sleep-only`.
+
 В активном режиме и при наличии хотя бы одного пула симулятор каждый раз немного меняет значения:
 
 - хешрейт;
@@ -183,7 +231,7 @@ this.modeList[2].text = $.i18n.prop("modeHEM");
 
 Для high-like режима базовые значения увеличиваются:
 
-- хешрейт примерно `sim.hashrateThs * 1.12`;
+- хешрейт примерно `sim.hashrateThs * 1.12` для SHA-256 или `sim.hashrateKsol * 1.12` для Z-серии;
 - мощность примерно `sim.powerW * 1.12`;
 - температура примерно `sim.temperatureC + 5`.
 
@@ -271,13 +319,17 @@ curl.exe --digest -u root:root `
 | Endpoint | Метод | Назначение |
 | --- | --- | --- |
 | `/cgi-bin/get_miner_conf.cgi` | `GET` | Текущие пулы и текущий work mode в Antminer-совместимых полях. |
-| `/cgi-bin/set_miner_conf.cgi` | `POST` | Настройка пулов и переключение режима. |
+| `/cgi-bin/set_miner_conf.cgi` | `POST` | Настройка пулов и переключение режима. Принимает и stock form-urlencoded, и современный JSON с `pools[]`. |
 | `/cgi-bin/get_system_info.cgi` | `GET` | Модель, firmware, filesystem version, MAC и идентификаторы устройства. |
+| `/cgi-bin/miner_type.cgi` | `GET` | `miner_type`, `subtype`, `fw_version` для BMU firmware preprocessing. |
 | `/cgi-bin/get_multi_option.cgi` | `GET` | Карта доступных режимов для discovery capabilities. |
 | `/cgi-bin/get_miner_status.cgi` | `GET` | Antminer status с хешрейтом, температурами, вентиляторами, power и mode. |
 | `/cgi-bin/minerStatus.cgi` | `GET` | Alias для miner status. |
 | `/cgi-bin/summary.cgi` | `GET` | Antminer summary. |
 | `/cgi-bin/stats.cgi` | `GET` | Antminer stats. |
+| `/cgi-bin/chart.cgi` | `GET` | Текущая точка chart-telemetry. |
+| `/cgi-bin/get_blink_status.cgi` | `GET` | Текущее состояние locate/fault LED. |
+| `/cgi-bin/blink.cgi` | `POST` | Управление LED: современный JSON `{\"blink\":true}` и legacy form action. |
 | `/cgi-bin/reboot.cgi` | `GET` | Имитация reboot на `sim.rebootDowntime`. |
 | `/cgi-bin/upgrade.cgi` | `POST` | Multipart upload прошивки. Поле файла должно называться `datafile`. |
 | `/cgi-bin/upgrade_status.cgi` | `GET` | Текущее состояние симуляции прошивки: `ready`, `uploaded`, `installing`, `installed`. |

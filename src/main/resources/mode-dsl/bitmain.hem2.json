@@ -1,0 +1,18 @@
+{
+  "key": "bitmain.hem2",
+  "priority": 100,
+  "when": {
+    "allOptionsExact": [
+      { "name": "modeNormal", "value": "0" },
+      { "name": "modeSleep", "value": "1" },
+      { "name": "modeHEM", "value": "2" }
+    ]
+  },
+  "then": {
+    "supportedModes": {
+      "Sleep": "1",
+      "Normal": "0",
+      "High": "2"
+    }
+  }
+}

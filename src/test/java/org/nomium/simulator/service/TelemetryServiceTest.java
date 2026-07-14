@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -53,11 +54,11 @@ class TelemetryServiceTest {
         List<Map<String, Object>> modeInfo = (List<Map<String, Object>>) modeOptions.get("ModeInfo");
 
         assertEquals("0", modeOptions.get("CurrentMode"));
-        assertEquals("Normal", modeOptions.get("CurrentModeName"));
+        assertEquals("modeNormal", modeOptions.get("CurrentModeName"));
         assertEquals(3, modeInfo.size());
         assertEquals("ModeName", modeInfo.getFirst().keySet().iterator().next());
         assertEquals("0", modeInfo.getFirst().get("ModeValue"));
-        assertEquals("Normal", modeInfo.getFirst().get("ModeName"));
+        assertEquals("modeNormal", modeInfo.getFirst().get("ModeName"));
     }
 
     @Test
@@ -89,12 +90,12 @@ class TelemetryServiceTest {
         List<Map<String, Object>> modeInfo = (List<Map<String, Object>>) modeOptions.get("ModeInfo");
 
         assertEquals("0", modeOptions.get("CurrentMode"));
-        assertEquals("Normal", modeOptions.get("CurrentModeName"));
+        assertEquals("modeNormal", modeOptions.get("CurrentModeName"));
         assertEquals(2, modeInfo.size());
         assertEquals("1", modeInfo.get(0).get("ModeValue"));
-        assertEquals("Sleep", modeInfo.get(0).get("ModeName"));
+        assertEquals("modeSleep", modeInfo.get(0).get("ModeName"));
         assertEquals("0", modeInfo.get(1).get("ModeValue"));
-        assertEquals("Normal", modeInfo.get(1).get("ModeName"));
+        assertEquals("modeNormal", modeInfo.get(1).get("ModeName"));
     }
 
     @Test
@@ -112,8 +113,8 @@ class TelemetryServiceTest {
 
         assertEquals("turbo", modeOptions.get("CurrentMode"));
         assertEquals("Turbo", modeOptions.get("CurrentModeName"));
-        assertEquals("eco", modeInfo.get(0).get("ModeValue"));
-        assertEquals("Eco", modeInfo.get(0).get("ModeName"));
+        assertEquals("eco", modeInfo.getFirst().get("ModeValue"));
+        assertEquals("Eco", modeInfo.getFirst().get("ModeName"));
     }
 
     @Test
@@ -131,6 +132,62 @@ class TelemetryServiceTest {
         assertBetween(number(summary.get("rate_avg")), 98, 102);
         assertBetween(number(summary.get("Temperature")), 58.8, 61.2);
         assertBetween(number(summary.get("Chip Temp Avg")), 68.6, 71.4);
+        assertEquals("TH/s", summary.get("rate_unit"));
+        assertEquals("SHA-256", summary.get("Algorithm"));
+    }
+
+    @Test
+    void antminerZSeriesUsesKsolTelemetryAndEquihashMarkers() {
+        SimProperties props = new SimProperties();
+        props.setIdentitySeed("z15-pro-01");
+        props.setModel("Antminer Z15 Pro");
+        props.setHashrateKsol(840);
+        props.setTelemetryJitterPercent(0);
+        TelemetryService telemetryService = telemetryService(props);
+
+        Map<String, Object> httpSummary = firstObject(telemetryService.antminerSummary(), "SUMMARY");
+        Map<String, Object> httpStats = firstObject(telemetryService.antminerStats(), "STATS");
+        Map<String, Object> tcpSummary = firstObject(telemetryService.cgminerSummary(), "SUMMARY");
+        Map<String, Object> tcpStats = firstObject(telemetryService.cgminerStats(), "STATS");
+        Map<String, Object> chart = firstObject(telemetryService.chart(), "chart");
+
+        assertEquals(840.0, number(httpSummary.get("rate_5s")));
+        assertEquals(840.0, number(httpSummary.get("rate_avg")));
+        assertEquals("KSol/s", httpSummary.get("rate_unit"));
+        assertEquals("Antminer Z15 Pro", httpSummary.get("Type"));
+        assertEquals("Equihash", httpSummary.get("Algorithm"));
+        assertEquals("ZCASH0", httpStats.get("ID"));
+
+        assertEquals(840.0, number(tcpSummary.get("GHS 5s")));
+        assertEquals("KSol/s", tcpSummary.get("rate_unit"));
+        assertEquals("ZCASH0", tcpStats.get("ID"));
+        assertEquals(840.0, number(tcpStats.get("GHS 5s")));
+        assertEquals("KSol/s", tcpStats.get("rate_unit"));
+        assertFalse(tcpStats.containsKey("RT"), "Equihash RT would be interpreted as TH/s by the agent");
+        assertFalse(tcpStats.containsKey("AVG"), "Equihash AVG would be interpreted as TH/s by the agent");
+
+        assertEquals(840.0, number(chart.get("rate_5s")));
+        assertEquals("KSol/s", chart.get("rate_unit"));
+    }
+
+    @Test
+    void antminerZSeriesKeepsDslLowPowerModeAndKsolUnit() {
+        SimProperties props = new SimProperties();
+        props.setIdentitySeed("z15-pro-low");
+        props.setModel("Antminer Z15 Pro");
+        props.setHashrateKsol(840);
+        props.setPowerW(2560);
+        props.setTelemetryJitterPercent(0);
+        props.getModeDsl().setRuleKey("bitmain.low-power3");
+        props.setDefaultWorkMode("low");
+        TelemetryService telemetryService = telemetryService(props);
+
+        Map<String, Object> summary = firstObject(telemetryService.antminerSummary(), "SUMMARY");
+
+        assertEquals(672.0, number(summary.get("rate_avg")));
+        assertEquals("KSol/s", summary.get("rate_unit"));
+        assertEquals(1843.2, number(summary.get("power")));
+        assertEquals("3", summary.get("Mode"));
     }
 
     @Test
@@ -210,6 +267,24 @@ class TelemetryServiceTest {
         assertEquals("1", stats.get("Mode"));
         assertBetween(number(summary.get("Temperature")), 15, 45);
         assertBetween(number(summary.get("Chip Temp Avg")), 15, 45);
+    }
+
+    @Test
+    void dslLowPowerModeRemainsActiveAndUsesReducedTelemetry() {
+        SimProperties props = new SimProperties();
+        props.setIdentitySeed("miner-01");
+        props.getModeDsl().setRuleKey("bitmain.low-power3");
+        props.setDefaultWorkMode("low");
+        props.setHashrateThs(100);
+        props.setPowerW(3000);
+        props.setTelemetryJitterPercent(0);
+        TelemetryService telemetryService = telemetryService(props);
+
+        Map<String, Object> summary = firstObject(telemetryService.antminerSummary(), "SUMMARY");
+
+        assertEquals(80.0, number(summary.get("rate_avg")));
+        assertEquals(2160.0, number(summary.get("power")));
+        assertEquals("3", summary.get("Mode"));
     }
 
     private static TelemetryService telemetryService(String identitySeed) {
