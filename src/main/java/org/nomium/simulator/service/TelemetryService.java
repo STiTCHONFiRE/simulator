@@ -1,16 +1,17 @@
 package org.nomium.simulator.service;
 
 import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import org.nomium.simulator.config.SimProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -23,7 +24,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 
 @Service
-@RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TelemetryService {
 
@@ -35,16 +35,33 @@ public class TelemetryService {
 
     SimProperties props;
     AntminerStateService antState;
+    Clock clock;
+    Object telemetryLock = new Object();
 
     @NonFinal
-    volatile Instant startedAt = Instant.now();
+    volatile Instant startedAt;
+
+    @NonFinal
+    TelemetryTransition telemetryTransition;
+
+    @Autowired
+    public TelemetryService(SimProperties props, AntminerStateService antState) {
+        this(props, antState, Clock.systemUTC());
+    }
+
+    TelemetryService(SimProperties props, AntminerStateService antState, Clock clock) {
+        this.props = props;
+        this.antState = antState;
+        this.clock = clock;
+        this.startedAt = clock.instant();
+    }
 
     public void setStartedAt(Instant startedAt) {
-        this.startedAt = startedAt == null ? Instant.now() : startedAt;
+        this.startedAt = startedAt == null ? clock.instant() : startedAt;
     }
 
     public long uptimeSeconds() {
-        long s = Duration.between(startedAt, Instant.now()).getSeconds();
+        long s = Duration.between(startedAt, clock.instant()).getSeconds();
         return Math.max(1, s);
     }
 
@@ -179,7 +196,7 @@ public class TelemetryService {
     public Map<String, Object> chart() {
         Metrics metrics = metrics(antState.snapshot());
         Map<String, Object> point = new LinkedHashMap<>();
-        point.put("timestamp", Instant.now().getEpochSecond());
+        point.put("timestamp", clock.instant().getEpochSecond());
         point.put("rate_5s", metrics.hashrate5s());
         point.put("rate_avg", metrics.hashrateAvg());
         point.put("rate_unit", metrics.rateUnit());
@@ -460,10 +477,10 @@ public class TelemetryService {
         if (idle) {
             hashFactor = 0.0;
             powerBase = Math.max(120, props.getPowerW() * 0.08);
-            tempBase = props.getIdleTemperatureC();
+            tempBase = idleTemperatureBase();
             chipTempOffset = 0.0;
-            fanMin = 1200;
-            fanMax = 2300;
+            fanMin = Math.max(300, props.getIdleFanMinRpm());
+            fanMax = Math.max(fanMin + 1, props.getIdleFanMaxRpm());
         } else {
             switch (modeKind) {
                 case "low" -> {
@@ -496,26 +513,27 @@ public class TelemetryService {
         boolean equihash = isAntminerZSeries();
         double configuredHashrate = equihash ? props.getHashrateKsol() : props.getHashrateThs();
         double hashBase = configuredHashrate * hashFactor;
-        double hashrate5s = hashBase <= 0 ? 0 : shiftByRandomPercent(hashBase, props.getTelemetryJitterPercent(), 0);
-        double hashrateAvg = hashBase <= 0 ? 0 : shiftByRandomPercent(hashBase, props.getTelemetryJitterPercent(), 0);
-        double boardTemp = idle
-                ? idleTemperature(0)
-                : shiftByRandomPercent(tempBase, props.getTelemetryJitterPercent(), 5);
-        double chipTemp = idle
-                ? idleTemperature(chipTempOffset)
-                : shiftByRandomPercent(tempBase + chipTempOffset, props.getTelemetryJitterPercent(), 5);
-        double power = shiftByRandomPercent(powerBase, props.getTelemetryJitterPercent(), 0);
+        TelemetryProfile profile = new TelemetryProfile(
+                hashBase,
+                powerBase,
+                tempBase,
+                tempBase + chipTempOffset,
+                fanMin,
+                fanMax,
+                idle
+        );
+        TelemetryPoint point = smoothTelemetry(profile, clock.instant());
 
         return new Metrics(
-                hashrate5s,
-                hashrateAvg,
-                power,
-                boardTemp,
-                chipTemp,
-                ThreadLocalRandom.current().nextInt(fanMin, fanMax),
-                ThreadLocalRandom.current().nextInt(fanMin, fanMax),
-                ThreadLocalRandom.current().nextInt(fanMin, fanMax),
-                ThreadLocalRandom.current().nextInt(fanMin, fanMax),
+                point.hashrate5s(),
+                point.hashrateAvg(),
+                point.powerW(),
+                point.boardTempC(),
+                point.chipTempC(),
+                point.fanIn(),
+                point.fanOut(),
+                point.fan3(),
+                point.fan4(),
                 mode,
                 antState.modeName(mode),
                 idle,
@@ -523,6 +541,156 @@ public class TelemetryService {
                 equihash ? "KSol/s" : "TH/s",
                 equihash ? "Equihash" : "SHA-256"
         );
+    }
+
+    private TelemetryPoint smoothTelemetry(TelemetryProfile profile, Instant now) {
+        synchronized (telemetryLock) {
+            if (telemetryTransition == null) {
+                TelemetryPoint initial = basePoint(profile);
+                telemetryTransition = newTransition(profile, initial, now);
+                return initial;
+            }
+
+            TelemetryPoint current = interpolate(telemetryTransition, now);
+            if (!profile.equals(telemetryTransition.profile())) {
+                telemetryTransition = newTransition(profile, current, now);
+                return interpolate(telemetryTransition, now);
+            }
+
+            if (!now.isBefore(telemetryTransition.endsAt())
+                    && !now.isBefore(telemetryTransition.hashrateStopsAt())) {
+                TelemetryPoint completed = telemetryTransition.target();
+                telemetryTransition = newTransition(profile, completed, now);
+                return completed;
+            }
+
+            return current;
+        }
+    }
+
+    private TelemetryTransition newTransition(TelemetryProfile profile, TelemetryPoint from, Instant now) {
+        return new TelemetryTransition(
+                profile,
+                from,
+                randomTarget(profile),
+                now,
+                now.plus(randomRampDuration()),
+                hashrateStopsAt(profile, from, now)
+        );
+    }
+
+    private Instant hashrateStopsAt(TelemetryProfile profile, TelemetryPoint from, Instant now) {
+        if (!profile.idle() || (from.hashrate5s() <= 0 && from.hashrateAvg() <= 0)) {
+            return now;
+        }
+
+        Duration delay = props.getHashrateStopDelay();
+        if (delay == null || delay.isNegative()) {
+            delay = Duration.ofSeconds(5);
+        }
+        return now.plus(delay);
+    }
+
+    private Duration randomRampDuration() {
+        long minMillis = durationMillis(props.getTelemetryRampMinDuration(), Duration.ofMinutes(3));
+        long maxMillis = durationMillis(props.getTelemetryRampMaxDuration(), Duration.ofMinutes(5));
+        if (maxMillis < minMillis) {
+            maxMillis = minMillis;
+        }
+
+        long millis = minMillis == maxMillis
+                ? minMillis
+                : ThreadLocalRandom.current().nextLong(minMillis, maxMillis + 1);
+        return Duration.ofMillis(millis);
+    }
+
+    private static long durationMillis(Duration value, Duration fallback) {
+        Duration normalized = value == null || value.isNegative() || value.isZero() ? fallback : value;
+        return Math.max(1, normalized.toMillis());
+    }
+
+    private TelemetryPoint basePoint(TelemetryProfile profile) {
+        int fan = profile.fanMin() + (profile.fanMax() - profile.fanMin()) / 2;
+        return new TelemetryPoint(
+                round(Math.max(0, profile.hashrateBase()), 2),
+                round(Math.max(0, profile.hashrateBase()), 2),
+                round(Math.max(0, profile.powerBase()), 2),
+                round(Math.max(0, profile.boardTempBase()), 2),
+                round(Math.max(0, profile.chipTempBase()), 2),
+                fan,
+                fan,
+                fan,
+                fan
+        );
+    }
+
+    private TelemetryPoint randomTarget(TelemetryProfile profile) {
+        double hashrate5s = profile.hashrateBase() <= 0
+                ? 0
+                : shiftByRandomPercent(profile.hashrateBase(), props.getTelemetryJitterPercent(), 0);
+        double hashrateAvg = profile.hashrateBase() <= 0
+                ? 0
+                : shiftByRandomPercent(profile.hashrateBase(), props.getTelemetryJitterPercent(), 0);
+        double boardTemp = profile.idle()
+                ? idleTemperature(0)
+                : shiftByRandomPercent(profile.boardTempBase(), props.getTelemetryJitterPercent(), 5);
+        double chipTemp = profile.idle()
+                ? idleTemperature(0)
+                : shiftByRandomPercent(profile.chipTempBase(), props.getTelemetryJitterPercent(), 5);
+
+        return new TelemetryPoint(
+                hashrate5s,
+                hashrateAvg,
+                shiftByRandomPercent(profile.powerBase(), props.getTelemetryJitterPercent(), 0),
+                boardTemp,
+                chipTemp,
+                randomFan(profile),
+                randomFan(profile),
+                randomFan(profile),
+                randomFan(profile)
+        );
+    }
+
+    private static int randomFan(TelemetryProfile profile) {
+        if (profile.fanMax() <= profile.fanMin()) {
+            return profile.fanMin();
+        }
+        return ThreadLocalRandom.current().nextInt(profile.fanMin(), profile.fanMax());
+    }
+
+    private static TelemetryPoint interpolate(TelemetryTransition transition, Instant now) {
+        long totalMillis = Math.max(1, Duration.between(transition.startsAt(), transition.endsAt()).toMillis());
+        long elapsedMillis = Duration.between(transition.startsAt(), now).toMillis();
+        double progress = Math.clamp((double) elapsedMillis / totalMillis, 0.0, 1.0);
+        TelemetryPoint from = transition.from();
+        TelemetryPoint target = transition.target();
+        boolean stopHashrate = transition.profile().idle();
+        double hashrate5s = stopHashrate
+                ? (now.isBefore(transition.hashrateStopsAt()) ? from.hashrate5s() : target.hashrate5s())
+                : lerp(from.hashrate5s(), target.hashrate5s(), progress);
+        double hashrateAvg = stopHashrate
+                ? (now.isBefore(transition.hashrateStopsAt()) ? from.hashrateAvg() : target.hashrateAvg())
+                : lerp(from.hashrateAvg(), target.hashrateAvg(), progress);
+
+        return new TelemetryPoint(
+                hashrate5s,
+                hashrateAvg,
+                lerp(from.powerW(), target.powerW(), progress),
+                lerp(from.boardTempC(), target.boardTempC(), progress),
+                lerp(from.chipTempC(), target.chipTempC(), progress),
+                lerp(from.fanIn(), target.fanIn(), progress),
+                lerp(from.fanOut(), target.fanOut(), progress),
+                lerp(from.fan3(), target.fan3(), progress),
+                lerp(from.fan4(), target.fan4(), progress)
+        );
+    }
+
+    private static double lerp(double from, double target, double progress) {
+        return round(from + (target - from) * progress, 2);
+    }
+
+    private static int lerp(int from, int target, double progress) {
+        return (int) Math.round(from + (target - from) * progress);
     }
 
     private boolean isAntminerZSeries() {
@@ -549,7 +717,20 @@ public class TelemetryService {
 
     private double idleTemperature(double offset) {
         double delta = Math.max(0, props.getIdleTemperatureDeltaC());
-        return round(Math.max(0, props.getIdleTemperatureC() + offset + ThreadLocalRandom.current().nextDouble(-delta, delta)), 2);
+        double base = idleTemperatureBase();
+        double min = idleTemperatureMin();
+        if (delta == 0) {
+            return round(Math.max(min, base + offset), 2);
+        }
+        return round(Math.max(min, base + offset + ThreadLocalRandom.current().nextDouble(-delta, delta)), 2);
+    }
+
+    private double idleTemperatureBase() {
+        return Math.max(idleTemperatureMin(), props.getIdleTemperatureC());
+    }
+
+    private double idleTemperatureMin() {
+        return Math.max(1, props.getIdleTemperatureMinC());
     }
 
     private double shiftByRandomPercent(double base, double maxPercent, double min) {
@@ -570,15 +751,8 @@ public class TelemetryService {
     }
 
     private double tempWithOffset(Metrics metrics, double base, double offset) {
-        double value = round(base + offset, 2);
-        if (!metrics.idle()) {
-            return value;
-        }
-
-        double delta = Math.max(0, props.getIdleTemperatureDeltaC());
-        double min = Math.max(0, props.getIdleTemperatureC() - delta);
-        double max = props.getIdleTemperatureC() + delta;
-        return round(Math.clamp(max, min, value), 2);
+        double min = metrics.idle() ? idleTemperatureMin() : 1;
+        return round(Math.max(min, base + offset), 2);
     }
 
     private static Map<String, Object> pool(AntminerStateService.Pool pool) {
@@ -602,7 +776,7 @@ public class TelemetryService {
     private Map<String, Object> status(String msg, int code, String description) {
         Map<String, Object> status = new LinkedHashMap<>();
         status.put("STATUS", "S");
-        status.put("When", Instant.now().getEpochSecond());
+        status.put("When", clock.instant().getEpochSecond());
         status.put("Code", code);
         status.put("Msg", msg);
         status.put("Description", description);
@@ -625,6 +799,40 @@ public class TelemetryService {
             boolean equihash,
             String rateUnit,
             String algorithm
+    ) {
+    }
+
+    private record TelemetryProfile(
+            double hashrateBase,
+            double powerBase,
+            double boardTempBase,
+            double chipTempBase,
+            int fanMin,
+            int fanMax,
+            boolean idle
+    ) {
+    }
+
+    private record TelemetryPoint(
+            double hashrate5s,
+            double hashrateAvg,
+            double powerW,
+            double boardTempC,
+            double chipTempC,
+            int fanIn,
+            int fanOut,
+            int fan3,
+            int fan4
+    ) {
+    }
+
+    private record TelemetryTransition(
+            TelemetryProfile profile,
+            TelemetryPoint from,
+            TelemetryPoint target,
+            Instant startsAt,
+            Instant endsAt,
+            Instant hashrateStopsAt
     ) {
     }
 }

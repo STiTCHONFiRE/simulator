@@ -92,9 +92,15 @@ services:
 | `sim.hashrateThs` | `SIM_HASHRATE_THS` | `104` | Базовый активный хешрейт в TH/s для normal mode. |
 | `sim.hashrateKsol` | `SIM_HASHRATE_KSOL` | `840` | Базовый активный хешрейт в KSol/s для Antminer Z-серии. Используется автоматически, если `sim.model` соответствует `Antminer Z<номер>`. |
 | `sim.temperatureC` | `SIM_TEMPERATURE_C` | `67` | Базовая активная температура в градусах C для normal mode. |
-| `sim.telemetryJitterPercent` | `SIM_TELEMETRY_JITTER_PERCENT` | `2.0` | Случайный сдвиг телеметрии на каждый ответ. Значение `2.0` даёт диапазон примерно `-2%..+2%`. |
+| `sim.telemetryJitterPercent` | `SIM_TELEMETRY_JITTER_PERCENT` | `2.0` | Максимальное случайное отклонение плавной цели телеметрии. Значение `2.0` даёт диапазон примерно `-2%..+2%`. |
 | `sim.idleTemperatureC` | `SIM_IDLE_TEMPERATURE_C` | `30.0` | Центр температуры в idle-состоянии. |
 | `sim.idleTemperatureDeltaC` | `SIM_IDLE_TEMPERATURE_DELTA_C` | `15.0` | Разброс idle-температуры вокруг `sim.idleTemperatureC`. При дефолтах температура держится около `15..45 C`. |
+| `sim.idleTemperatureMinC` | `SIM_IDLE_TEMPERATURE_MIN_C` | `15.0` | Нижняя граница температуры в sleep/idle. Симулятор всегда оставляет температуру положительной. |
+| `sim.idleFanMinRpm` | `SIM_IDLE_FAN_MIN_RPM` | `1200` | Минимальные обороты вентиляторов в sleep/idle. Вентиляторы не останавливаются. |
+| `sim.idleFanMaxRpm` | `SIM_IDLE_FAN_MAX_RPM` | `2300` | Верхняя граница пониженных оборотов вентиляторов в sleep/idle. |
+| `sim.telemetryRampMinDuration` | `SIM_TELEMETRY_RAMP_MIN_DURATION` | `3m` | Минимальная длительность плавного перехода телеметрии к новой цели. |
+| `sim.telemetryRampMaxDuration` | `SIM_TELEMETRY_RAMP_MAX_DURATION` | `5m` | Максимальная длительность плавного перехода. Для каждого перехода выбирается случайное значение между min и max. |
+| `sim.hashrateStopDelay` | `SIM_HASHRATE_STOP_DELAY` | `5s` | Задержка перед мгновенным обнулением хешрейта после перехода в sleep или удаления всех пулов. Можно задать `0s`. |
 | `sim.rebootDowntime` | `SIM_REBOOT_DOWNTIME` | `30s` в `application.yaml`, `15s` в кодовом default | Длительность имитации reboot. Пока устройство rebooting, HTTP отвечает `503`, Cgminer TCP закрывает соединение без payload. |
 | `sim.poolUrl` | `SIM_POOL_URL` | `stratum+tcp://pool.example.com:3333` | Начальный URL для всех трёх пулов. Если все URL пустые, устройство считается idle. |
 | `sim.auth.username` | `SIM_AUTH_USERNAME` | `root` | Пользователь Digest auth для `/cgi-bin/**` и остальных защищённых endpoint'ов. |
@@ -210,7 +216,7 @@ this.modeList[2].text = $.i18n.prop("modeHEM");
 - `rate_5s`, `rate_avg` и `rate_30m` отдаются в `KSol/s`;
 - Cgminer stats содержит маркеры `Type: Antminer Z...` и `ID: ZCASH0`;
 - базовый хешрейт берётся из `sim.hashrateKsol`, а `sim.hashrateThs` для Z-серии не используется;
-- DSL-режимы работают так же, как для SHA-256 Antminer: sleep обнуляет KSol, low/high изменяют базовое значение.
+- DSL-режимы работают так же, как для SHA-256 Antminer: sleep обнуляет KSol после короткой задержки, low/high изменяют базовое значение.
 
 Готовый пример находится в `docker-compose.antminer-z-series.yaml`:
 
@@ -220,14 +226,16 @@ docker compose -f docker-compose.antminer-z-series.yaml up -d
 
 В примере запускается `Antminer Z15 Pro` на `127.0.0.20` с номиналом `840 KSol/s` и встроенным DSL-профилем `bitmain.normal-sleep-only`.
 
-В активном режиме и при наличии хотя бы одного пула симулятор каждый раз немного меняет значения:
+При переключении режима, появлении или удалении пулов симулятор плавно переводит физическую телеметрию к новому уровню:
 
 - хешрейт;
 - температуру;
 - мощность;
-- производные температуры плат, чипов и fan/power fields.
+- производные температуры плат, чипов и обороты вентиляторов.
 
-Размер случайного сдвига задаётся `sim.telemetryJitterPercent`.
+Переход занимает случайное время между `sim.telemetryRampMinDuration` и `sim.telemetryRampMaxDuration`, по умолчанию от 3 до 5 минут. Между сменами режима случайный сдвиг `sim.telemetryJitterPercent` также становится новой плавной целью на такой интервал, поэтому повторные запросы больше не вызывают скачков показаний.
+
+Хешрейт при остановке является исключением: после перехода в sleep или удаления всех пулов прежнее значение сохраняется в течение `sim.hashrateStopDelay` (по умолчанию 5 секунд), а затем сразу становится `0`. Температура, мощность и вентиляторы в это время продолжают плавно снижаться 3–5 минут, но не обнуляются.
 
 Для high-like режима базовые значения увеличиваются:
 
@@ -237,11 +245,12 @@ docker compose -f docker-compose.antminer-z-series.yaml up -d
 
 Для sleep-like режима:
 
-- хешрейт всегда `0`;
-- мощность и fan speed снижаются до idle-значений;
-- температуры фиксируются в диапазоне `sim.idleTemperatureC +/- sim.idleTemperatureDeltaC`.
+- хешрейт после короткой задержки сразу становится `0`;
+- мощность плавно снижается до idle-значения;
+- температуры постепенно переходят в диапазон `sim.idleTemperatureC +/- sim.idleTemperatureDeltaC`, ограниченный снизу `sim.idleTemperatureMinC`;
+- вентиляторы продолжают работать в пониженном диапазоне `sim.idleFanMinRpm .. sim.idleFanMaxRpm`.
 
-Такое же idle-поведение включается, если у устройства нет ни одного пула.
+При возврате в normal/low/high хешрейт и остальные значения нарастают за интервал 3–5 минут. Такое же отключение хешрейта и плавное idle-поведение включаются, если у устройства нет ни одного пула.
 
 ## Пулы
 

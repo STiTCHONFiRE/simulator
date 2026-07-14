@@ -3,6 +3,11 @@ package org.nomium.simulator.service;
 import org.junit.jupiter.api.Test;
 import org.nomium.simulator.config.SimProperties;
 
+import java.time.Clock;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Map;
 
@@ -137,6 +142,158 @@ class TelemetryServiceTest {
     }
 
     @Test
+    void telemetryRemainsStableForRepeatedRequestsAtTheSameInstant() {
+        SimProperties props = new SimProperties();
+        props.setHashrateThs(100);
+        props.setTemperatureC(60);
+        props.setTelemetryJitterPercent(2);
+        MutableClock clock = new MutableClock(Instant.parse("2026-07-15T00:00:00Z"));
+        TelemetryService telemetryService = telemetryService(props, clock);
+
+        Map<String, Object> first = firstObject(telemetryService.antminerSummary(), "SUMMARY");
+        Map<String, Object> second = firstObject(telemetryService.antminerSummary(), "SUMMARY");
+
+        assertEquals(first.get("rate_5s"), second.get("rate_5s"));
+        assertEquals(first.get("rate_avg"), second.get("rate_avg"));
+        assertEquals(first.get("Temperature"), second.get("Temperature"));
+        assertEquals(first.get("Chip Temp Avg"), second.get("Chip Temp Avg"));
+        assertEquals(first.get("power"), second.get("power"));
+        assertEquals(first.get("fan1"), second.get("fan1"));
+    }
+
+    @Test
+    void sleepStopsHashrateAfterDelayWhileOtherTelemetryRampsDownAndUp() {
+        SimProperties props = new SimProperties();
+        props.setHashrateThs(100);
+        props.setPowerW(3000);
+        props.setTemperatureC(60);
+        props.setIdleTemperatureC(30);
+        props.setIdleTemperatureDeltaC(0);
+        props.setTelemetryJitterPercent(0);
+        props.setTelemetryRampMinDuration(Duration.ofMinutes(4));
+        props.setTelemetryRampMaxDuration(Duration.ofMinutes(4));
+        props.setHashrateStopDelay(Duration.ofSeconds(5));
+        AntminerStateService state = new AntminerStateService(props);
+        MutableClock clock = new MutableClock(Instant.parse("2026-07-15T00:00:00Z"));
+        TelemetryService telemetryService = new TelemetryService(props, state, clock);
+
+        Map<String, Object> normal = firstObject(telemetryService.antminerSummary(), "SUMMARY");
+        assertEquals(100.0, number(normal.get("rate_5s")));
+        assertEquals(60.0, number(normal.get("Temperature")));
+        assertEquals(70.0, number(normal.get("Chip Temp Avg")));
+        assertEquals(3000.0, number(normal.get("power")));
+        assertEquals(5500, ((Number) normal.get("fan1")).intValue());
+
+        state.applyForm(Map.of("_ant_work_mode", "1"));
+        Map<String, Object> sleepStart = firstObject(telemetryService.antminerSummary(), "SUMMARY");
+        assertEquals(100.0, number(sleepStart.get("rate_5s")));
+        assertEquals(60.0, number(sleepStart.get("Temperature")));
+        assertEquals("1", sleepStart.get("Mode"));
+
+        clock.advance(Duration.ofSeconds(4));
+        Map<String, Object> beforeHashrateStop = firstObject(telemetryService.antminerSummary(), "SUMMARY");
+        assertEquals(100.0, number(beforeHashrateStop.get("rate_5s")));
+        assertTrue(number(beforeHashrateStop.get("Temperature")) < 60.0);
+
+        clock.advance(Duration.ofSeconds(1));
+        Map<String, Object> afterHashrateStop = firstObject(telemetryService.antminerSummary(), "SUMMARY");
+        assertEquals(0.0, number(afterHashrateStop.get("rate_5s")));
+        assertEquals(0.0, number(afterHashrateStop.get("rate_avg")));
+        assertTrue(number(afterHashrateStop.get("Temperature")) > 30.0);
+
+        clock.advance(Duration.ofSeconds(115));
+        Map<String, Object> sleepHalfway = firstObject(telemetryService.antminerSummary(), "SUMMARY");
+        assertEquals(0.0, number(sleepHalfway.get("rate_5s")));
+        assertEquals(45.0, number(sleepHalfway.get("Temperature")));
+        assertEquals(50.0, number(sleepHalfway.get("Chip Temp Avg")));
+        assertEquals(1620.0, number(sleepHalfway.get("power")));
+        assertBetween(number(sleepHalfway.get("fan1")), 3350, 3900);
+
+        clock.advance(Duration.ofMinutes(2));
+        Map<String, Object> sleeping = firstObject(telemetryService.antminerSummary(), "SUMMARY");
+        assertEquals(0.0, number(sleeping.get("rate_5s")));
+        assertEquals(30.0, number(sleeping.get("Temperature")));
+        assertEquals(30.0, number(sleeping.get("Chip Temp Avg")));
+        assertEquals(240.0, number(sleeping.get("power")));
+        assertBetween(number(sleeping.get("fan1")), 1200, 2299);
+
+        state.applyForm(Map.of("_ant_work_mode", "0"));
+        firstObject(telemetryService.antminerSummary(), "SUMMARY");
+        clock.advance(Duration.ofMinutes(2));
+        Map<String, Object> normalHalfway = firstObject(telemetryService.antminerSummary(), "SUMMARY");
+        assertEquals(50.0, number(normalHalfway.get("rate_5s")));
+        assertEquals(45.0, number(normalHalfway.get("Temperature")));
+        assertEquals(50.0, number(normalHalfway.get("Chip Temp Avg")));
+        assertEquals(1620.0, number(normalHalfway.get("power")));
+
+        clock.advance(Duration.ofMinutes(2));
+        Map<String, Object> normalAgain = firstObject(telemetryService.antminerSummary(), "SUMMARY");
+        assertEquals(100.0, number(normalAgain.get("rate_5s")));
+        assertEquals(60.0, number(normalAgain.get("Temperature")));
+        assertEquals(70.0, number(normalAgain.get("Chip Temp Avg")));
+        assertEquals(3000.0, number(normalAgain.get("power")));
+        assertBetween(number(normalAgain.get("fan1")), 4800, 6199);
+    }
+
+    @Test
+    void emptyPoolsStopHashrateAfterTheSameDelay() {
+        SimProperties props = new SimProperties();
+        props.setHashrateThs(100);
+        props.setTelemetryJitterPercent(0);
+        props.setTelemetryRampMinDuration(Duration.ofMinutes(4));
+        props.setTelemetryRampMaxDuration(Duration.ofMinutes(4));
+        props.setHashrateStopDelay(Duration.ofSeconds(5));
+        AntminerStateService state = new AntminerStateService(props);
+        MutableClock clock = new MutableClock(Instant.parse("2026-07-15T00:00:00Z"));
+        TelemetryService telemetryService = new TelemetryService(props, state, clock);
+
+        firstObject(telemetryService.antminerSummary(), "SUMMARY");
+        state.applyForm(Map.of(
+                "_ant_pool1url", "",
+                "_ant_pool2url", "",
+                "_ant_pool3url", ""
+        ));
+        firstObject(telemetryService.antminerSummary(), "SUMMARY");
+
+        clock.advance(Duration.ofSeconds(4));
+        Map<String, Object> beforeStop = firstObject(telemetryService.antminerSummary(), "SUMMARY");
+        assertEquals(100.0, number(beforeStop.get("rate_5s")));
+
+        clock.advance(Duration.ofSeconds(1));
+        Map<String, Object> stopped = firstObject(telemetryService.antminerSummary(), "SUMMARY");
+        assertEquals(0.0, number(stopped.get("rate_5s")));
+        assertEquals(0.0, number(stopped.get("rate_avg")));
+        assertTrue(number(stopped.get("Temperature")) > props.getIdleTemperatureC());
+        assertEquals("0", stopped.get("Mode"));
+    }
+
+    @Test
+    void sleepKeepsTemperatureAndFansRunningAtReducedNonZeroValues() {
+        SimProperties props = new SimProperties();
+        props.setDefaultWorkMode("sleep");
+        props.setIdleTemperatureC(0);
+        props.setIdleTemperatureDeltaC(0);
+        props.setIdleTemperatureMinC(12);
+        props.setIdleFanMinRpm(900);
+        props.setIdleFanMaxRpm(1500);
+        props.setTelemetryJitterPercent(0);
+        TelemetryService telemetryService = telemetryService(props);
+
+        Map<String, Object> summary = firstObject(telemetryService.antminerSummary(), "SUMMARY");
+
+        assertEquals(0.0, number(summary.get("rate_5s")));
+        assertEquals(12.0, number(summary.get("Temperature")));
+        assertEquals(12.0, number(summary.get("Chip Temp Avg")));
+        assertEquals(12.0, number(summary.get("temp3")));
+        assertEquals(12.0, number(summary.get("temp_chip3")));
+        assertEquals(1200, ((Number) summary.get("fan1")).intValue());
+        assertEquals(1200, ((Number) summary.get("fan2")).intValue());
+        assertEquals(1200, ((Number) summary.get("fan3")).intValue());
+        assertEquals(1200, ((Number) summary.get("fan4")).intValue());
+        assertEquals("1", summary.get("Mode"));
+    }
+
+    @Test
     void antminerZSeriesUsesKsolTelemetryAndEquihashMarkers() {
         SimProperties props = new SimProperties();
         props.setIdentitySeed("z15-pro-01");
@@ -246,6 +403,8 @@ class TelemetryServiceTest {
         assertEquals(0.0, number(summary.get("rate_avg")));
         assertBetween(number(summary.get("Temperature")), 15, 45);
         assertBetween(number(summary.get("Chip Temp Avg")), 15, 45);
+        assertBetween(number(summary.get("fan1")), 1200, 2299);
+        assertBetween(number(summary.get("fan2")), 1200, 2299);
     }
 
     @Test
@@ -267,6 +426,8 @@ class TelemetryServiceTest {
         assertEquals("1", stats.get("Mode"));
         assertBetween(number(summary.get("Temperature")), 15, 45);
         assertBetween(number(summary.get("Chip Temp Avg")), 15, 45);
+        assertBetween(number(summary.get("fan1")), 1200, 2299);
+        assertBetween(number(summary.get("fan2")), 1200, 2299);
     }
 
     @Test
@@ -297,6 +458,10 @@ class TelemetryServiceTest {
         return new TelemetryService(props, new AntminerStateService(props));
     }
 
+    private static TelemetryService telemetryService(SimProperties props, Clock clock) {
+        return new TelemetryService(props, new AntminerStateService(props), clock);
+    }
+
     @SuppressWarnings("unchecked")
     private static Map<String, Object> firstObject(Map<String, Object> response, String key) {
         return ((List<Map<String, Object>>) response.get(key)).getFirst();
@@ -308,5 +473,32 @@ class TelemetryServiceTest {
 
     private static void assertBetween(double actual, double min, double max) {
         assertTrue(actual >= min && actual <= max, "expected " + actual + " between " + min + " and " + max);
+    }
+
+    private static final class MutableClock extends Clock {
+        private Instant current;
+
+        private MutableClock(Instant current) {
+            this.current = current;
+        }
+
+        private void advance(Duration duration) {
+            current = current.plus(duration);
+        }
+
+        @Override
+        public ZoneId getZone() {
+            return ZoneOffset.UTC;
+        }
+
+        @Override
+        public Clock withZone(ZoneId zone) {
+            return zone.equals(ZoneOffset.UTC) ? this : Clock.fixed(current, zone);
+        }
+
+        @Override
+        public Instant instant() {
+            return current;
+        }
     }
 }

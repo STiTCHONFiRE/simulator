@@ -29,7 +29,13 @@ public class SimProperties {
     double telemetryJitterPercent = 2.0;
     double idleTemperatureC = 30.0;
     double idleTemperatureDeltaC = 15.0;
+    double idleTemperatureMinC = 15.0;
+    int idleFanMinRpm = 1200;
+    int idleFanMaxRpm = 2300;
 
+    Duration telemetryRampMinDuration = Duration.ofMinutes(3);
+    Duration telemetryRampMaxDuration = Duration.ofMinutes(5);
+    Duration hashrateStopDelay = Duration.ofSeconds(5);
     Duration rebootDowntime = Duration.ofSeconds(15);
 
     String poolUrl = "stratum+tcp://pool.example.com:3333";

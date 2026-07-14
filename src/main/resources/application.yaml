@@ -25,6 +25,12 @@ sim:
   telemetryJitterPercent: ${SIM_TELEMETRY_JITTER_PERCENT:2.0}
   idleTemperatureC: ${SIM_IDLE_TEMPERATURE_C:30.0}
   idleTemperatureDeltaC: ${SIM_IDLE_TEMPERATURE_DELTA_C:15.0}
+  idleTemperatureMinC: ${SIM_IDLE_TEMPERATURE_MIN_C:15.0}
+  idleFanMinRpm: ${SIM_IDLE_FAN_MIN_RPM:1200}
+  idleFanMaxRpm: ${SIM_IDLE_FAN_MAX_RPM:2300}
+  telemetryRampMinDuration: ${SIM_TELEMETRY_RAMP_MIN_DURATION:3m}
+  telemetryRampMaxDuration: ${SIM_TELEMETRY_RAMP_MAX_DURATION:5m}
+  hashrateStopDelay: ${SIM_HASHRATE_STOP_DELAY:5s}
   reboot-downtime: 30s
   poolUrl: stratum+tcp://pool.example.com:3333
 
